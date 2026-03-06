@@ -1,5 +1,16 @@
 /* From Uiverse.io by Harsha2lucky */
+.LogIn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  color: white;
 
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 .content {
   width: 330px;
   padding: 40px 30px;

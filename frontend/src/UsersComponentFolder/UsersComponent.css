@@ -1,0 +1,334 @@
+.user {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  color: white;
+  position: relative;
+}
+
+/* User info section */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border-radius: 16px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.user-info:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.user-info img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+}
+
+/* Add default avatar if no image */
+.user-info img[src=""] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+}
+
+.user-info img[src=""]::after {
+  content: "👤";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  color: white;
+}
+
+.user-info h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
+  flex: 1;
+}
+
+/* Call actions section */
+.user-call {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-call svg {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.user-call svg:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.user-call svg:last-child:hover {
+  background: #2196f3;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+}
+.user-call svg:first-child:hover {
+  background: #4caf50;
+  box-shadow: 0 4px 15px rgb(79, 245, 123);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .user {
+    padding: 15px;
+  }
+
+  .user-info {
+    padding: 12px;
+  }
+
+  .user-info h1 {
+    font-size: 1.3rem;
+  }
+
+  .user-info img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .user-call svg {
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user {
+    padding: 12px;
+  }
+
+  .user-info {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    padding: 15px 10px;
+  }
+
+  .user-info h1 {
+    font-size: 1.2rem;
+  }
+
+  .user-info img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .user-call {
+    padding: 10px;
+  }
+
+  .user-call svg {
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .user {
+    padding: 10px;
+  }
+
+  .user-info {
+    padding: 12px 8px;
+    margin-bottom: 12px;
+  }
+
+  .user-info h1 {
+    font-size: 1rem;
+  }
+
+  .user-info img {
+    width: 50px;
+    height: 50px;
+    border-width: 2px;
+  }
+
+  .user-call {
+    gap: 10px;
+  }
+
+  .user-call svg {
+    width: 18px;
+    height: 18px;
+    padding: 8px;
+  }
+}
+
+/* Landscape orientation */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  .user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .user-info {
+    flex: 1;
+    margin-bottom: 0;
+    padding: 10px;
+  }
+
+  .user-info img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .user-info h1 {
+    font-size: 1rem;
+  }
+
+  .user-call {
+    width: auto;
+    padding: 8px;
+  }
+}
+
+/* Animation for call buttons */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.user-call svg:active {
+  animation: pulse 0.3s ease;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .user-info {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .user-call {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .user-call svg {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Tooltip styles (optional) */
+.user-call svg {
+  position: relative;
+}
+
+.user-call svg::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  margin-bottom: 5px;
+}
+
+.user-call svg:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Add tooltips */
+.user-call svg:first-child::after {
+  content: "Call";
+}
+
+.user-call svg:last-child::after {
+  content: "Video Call";
+}
+
+/* Status indicator (optional) */
+.user-info {
+  position: relative;
+}
+
+.user-info::after {
+  content: "";
+  position: absolute;
+  bottom: 15px;
+  left: 65px;
+  width: 12px;
+  height: 12px;
+  background: #4caf50;
+  border: 2px solid white;
+  border-radius: 50%;
+  display: none;
+}
+
+@media screen and (min-width: 769px) {
+  .user-info::after {
+    display: block;
+  }
+}
+
+/* Loading state */
+.user.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.user.loading .user-info {
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}

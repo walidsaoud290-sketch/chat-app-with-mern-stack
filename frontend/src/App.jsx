@@ -4,6 +4,8 @@ import "./App.css";
 import LogIn from "./forms/LogInFolder/LogIn";
 import SignUp from "./forms/SignUpFolder/SignUp";
 import { createContext } from "react";
+import Chat from "./chatFolder/Chat";
+import ChatPage from "./ChatPage/ChatPage";
 
 export const context = createContext();
 function App() {
@@ -17,6 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LogIn />} />
             <Route path="/signUp" element={<SignUp />} />
+            <Route path="/chat" element={<ChatPage />} />
           </Routes>
         </BrowserRouter>
       </context.Provider>
