@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-
-import Chat from "./chatFolder/Chat";
 import LogIn from "./forms/LogInFolder/LogIn";
 import SignUp from "./forms/SignUpFolder/SignUp";
 import { createContext } from "react";

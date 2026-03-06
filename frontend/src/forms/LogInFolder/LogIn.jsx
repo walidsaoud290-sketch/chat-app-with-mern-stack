@@ -1,29 +1,49 @@
-import React from "react";
 import "./LogIn.css";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
-import { useEffect } from "react";
-import axios from "axios";
+import { usePostMethod } from "../../fetching_to_backend/to_backend";
+import { useContext } from "react";
+import { context } from "../../App";
 const LogIn = () => {
   const email = useRef();
   const password = useRef();
+  const { errors, setErrors } = useContext(context);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    const fetching_data = async () => {
-      const api = await axios.get("http://localhost:3000/api/auth/login");
-      console.log(api);
-    };
-    fetching_data();
-  }, []);
+    try {
+      const api = await usePostMethod("/auth/login", {
+        email: email.current.value,
+        password: password.current.value,
+      });
+      const data = api.data;
+      if (data.status) {
+        setErrors({});
+      }
+      console.log(data);
+    } catch (error) {
+      if (error.response.data.errors) {
+        console.log(error.response.data.errors);
+        setErrors(error.response.data.errors);
+      }
+      console.log("error login:" + error);
+    }
+    console.log();
+  };
 
   return (
     <>
       <div className="content">
         <div className="text">Login</div>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="field">
-            <input required ref={email} type="email" className="input" />
+            <input
+              placeholder="Email"
+              ref={email}
+              type="email"
+              className="input"
+            />
 
             <span className="span">
               <svg
@@ -48,12 +68,15 @@ const LogIn = () => {
                 </g>
               </svg>
             </span>
-
-            <label className="label">Email</label>
           </div>
-
+          {errors?.email && <p> {errors.email} </p>}
           <div className="field">
-            <input required type="password" ref={password} className="input" />
+            <input
+              placeholder="Password"
+              type="password"
+              ref={password}
+              className="input"
+            />
 
             <span className="span">
               <svg
@@ -79,9 +102,8 @@ const LogIn = () => {
                 </g>
               </svg>
             </span>
-
-            <label className="label">Password</label>
           </div>
+          {errors?.password && <p> {errors.password} </p>}
 
           <div className="forgot-pass">
             <a href="#">Forgot Password?</a>

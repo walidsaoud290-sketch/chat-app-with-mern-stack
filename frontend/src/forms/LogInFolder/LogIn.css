@@ -8,7 +8,6 @@
   box-shadow:
     -3px -3px 7px #ffffff73,
     2px 2px 5px rgba(94, 104, 121, 0.288);
-
 }
 
 .content .text {
@@ -104,7 +103,6 @@
 }
 
 .button:focus {
-  color: #3498db;
   box-shadow:
     inset 2px 2px 5px #babecc,
     inset -5px -5px 10px #ffffff73;
