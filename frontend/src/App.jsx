@@ -6,6 +6,7 @@ import SignUp from "./forms/SignUpFolder/SignUp";
 import { createContext } from "react";
 import Chat from "./chatFolder/Chat";
 import ChatPage from "./ChatPage/ChatPage";
+import Home from "./HomeFolder/Home";
 
 export const context = createContext();
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<LogIn />} />
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/chat" element={<ChatPage />} />
+            <Route path="/Home" element={<Home />} />
           </Routes>
         </BrowserRouter>
       </context.Provider>

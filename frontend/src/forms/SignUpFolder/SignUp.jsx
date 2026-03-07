@@ -1,34 +1,38 @@
 import React, { useContext } from "react";
 import "./SignUp.css";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { context } from "../../App";
+import { usePostMethod } from "../../fetching_to_backend/to_backend";
 
 const SignUp = () => {
   const username = useRef();
   const email = useRef();
   const password = useRef();
   const { errors, setErrors } = useContext(context);
+  const navigate = useNavigate();
 
-  const validationEmail = (valEmail) => {
-    const isCorrecte = valEmail.split("@");
-    const regex = /^[a-zA-Z._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const isValid = regex.test(valEmail);
-    if (!isNaN(isCorrecte[0]) || !isValid) {
-      setErrors((prev) => ({ ...prev, email: "Format Email Incorrect" }));
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const isEmailCorrecte = validationEmail(email.current.value);
-    if (!isEmailCorrecte) {
-      return;
-    }
+
     try {
+      const api = await usePostMethod("/auth/signUp", {
+        username: username.current.value,
+        email: email.current.value,
+        password: password.current.value,
+      });
+      const status = api.status;
+      console.log(status);
+      if (status === 200) {
+        setErrors({});
+        navigate("/chat");
+      }
+      console.log(api.data);
     } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+        setErrors(error.response.data);
+      }
       console.log("Error Sign up :" + error);
     }
   };
@@ -41,7 +45,12 @@ const SignUp = () => {
 
           <form>
             <div className="field">
-              <input required type="text" className="input" />
+              <input
+                ref={username}
+                placeholder="Username"
+                type="text"
+                className="input"
+              />
 
               <span className="span">
                 <svg
@@ -73,7 +82,12 @@ const SignUp = () => {
               <p className="text-danger"> {errors.username} </p>
             )}
             <div className="field">
-              <input required type="email" className="input" />
+              <input
+                placeholder="Email"
+                ref={email}
+                type="email"
+                className="input"
+              />
 
               <span className="span">
                 <svg
@@ -105,7 +119,12 @@ const SignUp = () => {
             <br />
 
             <div className="field">
-              <input required type="password" className="input" />
+              <input
+                ref={password}
+                placeholder="password"
+                type="password"
+                className="input"
+              />
 
               <span className="span">
                 <svg
@@ -137,8 +156,10 @@ const SignUp = () => {
             {errors?.password && (
               <p className="text-danger"> {errors.password} </p>
             )}
-
-            <button type="submit" className="button">
+            {errors?.error_message && (
+              <p className="text-danger"> {errors.error_message} </p>
+            )}
+            <button type="submit" className="button" onClick={handleSubmit}>
               Sign up
             </button>
 

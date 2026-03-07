@@ -1,50 +1,44 @@
 import "./LogIn.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { usePostMethod } from "../../fetching_to_backend/to_backend";
 import { useContext } from "react";
 import { context } from "../../App";
+import { useEffect } from "react";
 const LogIn = () => {
   const email = useRef();
   const password = useRef();
   const { errors, setErrors } = useContext(context);
-
-  const validationEmail = (valEmail) => {
-    const isCorrecte = valEmail.split("@");
-    const regex = /^[a-zA-Z._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const isValid = regex.test(valEmail);
-    if (!isNaN(isCorrecte[0]) || !isValid) {
-      setErrors((prev) => ({ ...prev, email: "Format Email Incorrect" }));
-      return false;
-    }
-    return true;
-  };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const isCorrecteEmail = validationEmail(email.current.value);
-    if (!isCorrecteEmail) {
-      return;
-    }
     try {
       const api = await usePostMethod("/auth/login", {
         email: email.current.value,
         password: password.current.value,
       });
-      const data = api.data;
-      if (data.status) {
+      const status = api.status;
+      console.log(status);
+      if (status === 200) {
         setErrors({});
+        navigate("/chat");
+        const data = api.data;
+        console.log(data);
       }
-      console.log(data);
     } catch (error) {
-      if (error.response.data.errors) {
-        console.log(error.response.data.errors);
-        setErrors(error.response.data.errors);
+      if (error.response) {
+        console.log(error.response.data);
+        setErrors(error.response.data);
       }
       console.log("error login:" + error);
     }
   };
+
+  useEffect(() => {
+    setErrors({});
+  }, []);
 
   return (
     <>
@@ -120,12 +114,16 @@ const LogIn = () => {
                 </svg>
               </span>
             </div>
-            {errors?.password && <p> {errors.password} </p>}
+            {errors?.password && (
+              <p className="text-danger"> {errors.password} </p>
+            )}
 
             <div className="forgot-pass">
               <a href="#">Forgot Password?</a>
             </div>
-
+            {errors?.error_message && (
+              <p className="text-danger"> {errors.error_message} </p>
+            )}
             <button type="submit" className="button">
               Sign in
             </button>

@@ -24,5 +24,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.listen(port, () => {
-  console.log("the server is running on the port 3000");
+  connectToMongo();
+  console.log("the server is running on the port 5000");
 });
