@@ -17,7 +17,7 @@
 
 .chat-window {
   flex: 1;
-  overflow-y: auto;
+  overflow: auto;
   padding: 24px;
   background: #f8f9fa;
   background-image:
