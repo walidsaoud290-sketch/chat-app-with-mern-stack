@@ -3,6 +3,7 @@ import "./Chat.css";
 import { io } from "socket.io-client";
 
 const Chat = () => {
+  
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const inputMessage = useRef();
@@ -37,6 +38,7 @@ const Chat = () => {
           received: false,
         };
         //
+        
         socket.emit("send_image", imageData);
       };
       console.log(messages);
