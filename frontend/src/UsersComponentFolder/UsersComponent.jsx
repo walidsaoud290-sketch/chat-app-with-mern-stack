@@ -5,8 +5,11 @@ const UsersComponent = () => {
     <>
       <div className="user">
         <div className="user-info">
-          <img src="" alt="user_image" />
-          <h1>Yassin</h1>
+          <img
+            src="https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
+            alt="user_image"
+          />
+          <h1 className="text-white">Yassin</h1>
         </div>
         <div className="user-call">
           <svg

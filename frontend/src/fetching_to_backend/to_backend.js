@@ -20,3 +20,23 @@ export const usePostMethod = async (path, data) => {
     throw error;
   }
 };
+
+export const useGetMethod = async (path) => {
+  try {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+    const api = await axios.get(
+      "http://localhost:5000/api" + path,
+      {},
+      {
+        headers,
+      },
+    );
+    return api;
+  } catch (error) {
+    console.log("Erreur in GET methode :" + error);
+    throw error;
+  }
+};

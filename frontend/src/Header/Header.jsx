@@ -46,7 +46,6 @@ const Header = () => {
                 <span className="badge badge-xs badge-primary indicator-item"></span>
               </div>
             </button>
-
           </div>
 
           {/* Profile Dropdown */}

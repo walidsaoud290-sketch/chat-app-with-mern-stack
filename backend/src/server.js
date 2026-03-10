@@ -6,6 +6,7 @@ import http from "http";
 import authRoutes from "./routes/auth.route.js";
 import { connectToMongo } from "./config/db.js";
 import { connect_webSockets } from "./socket/socket.js";
+import dataRoutes from "./routes/data.route.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/data", dataRoutes);
 
 const server = http.createServer(app);
 

@@ -73,7 +73,6 @@ const Chat = () => {
   // Fonction pour rendre un message selon son type
   const renderMessage = (message, idx) => {
     return (
-      
       <li
         key={idx}
         className={message.sender === socket.id ? "text-end" : "text-start"}
