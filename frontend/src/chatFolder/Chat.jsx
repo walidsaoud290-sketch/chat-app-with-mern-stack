@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Chat.css";
 import { io } from "socket.io-client";
 
 const Chat = () => {
-  
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const inputMessage = useRef();
@@ -32,7 +31,7 @@ const Chat = () => {
       reader.onload = (event) => {
         const imageData = {
           type: "image",
-          content: event.target.result, 
+          content: event.target.result,
           sender: socket.id,
           timestamp: new Date().toISOString(),
           received: false,
@@ -74,12 +73,37 @@ const Chat = () => {
   // Fonction pour rendre un message selon son type
   const renderMessage = (message, idx) => {
     return (
+      
       <li
         key={idx}
         className={message.sender === socket.id ? "text-end" : "text-start"}
       >
         {message.type === "image" ? (
           <div className="image-message">
+            {message.sender === socket.id ? (
+              <>
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
             <img
               src={message.content}
               alt="Chat content"
@@ -100,6 +124,29 @@ const Chat = () => {
           </div>
         ) : (
           <div className="text-message">
+            {message.sender === socket.id ? (
+              <>
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             <span className="message-content">{message.content}</span>
             <div className="message-info">
               <span className="sender">
