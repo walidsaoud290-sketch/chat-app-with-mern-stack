@@ -33,12 +33,11 @@ const Chat = () => {
         const imageData = {
           type: "image",
           content: event.target.result, 
-          sender: "me",
+          sender: socket.id,
           timestamp: new Date().toISOString(),
           received: false,
         };
-        //
-        
+
         socket.emit("send_image", imageData);
       };
       console.log(messages);
