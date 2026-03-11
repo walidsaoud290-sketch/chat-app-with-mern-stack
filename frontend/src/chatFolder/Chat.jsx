@@ -1,12 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import "./Chat.css";
 import { io } from "socket.io-client";
+import { days } from "../days";
 
 const Chat = () => {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const inputMessage = useRef();
   const inputImage = useRef();
+  const chatWindowRef = useRef();
+  const idx = new Date().getDay();
+  const day = days[idx - 1];
+
+  useEffect(() => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const addMessage = (e) => {
     e.preventDefault();
@@ -165,8 +175,9 @@ const Chat = () => {
   return (
     <div className="card">
       <div className="chat-header">Chat</div>
-      <div className="chat-window">
+      <div className="chat-window" ref={chatWindowRef}>
         <ul className="message-list">
+          <p className="day text-white"> {day} </p>
           {messages.length <= 0 ? (
             <p className="text-center">No messages Now</p>
           ) : (
