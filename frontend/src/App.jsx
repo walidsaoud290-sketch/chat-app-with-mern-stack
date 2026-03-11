@@ -7,6 +7,7 @@ import { createContext } from "react";
 import Chat from "./chatFolder/Chat";
 import ChatPage from "./ChatPage/ChatPage";
 import Home from "./HomeFolder/Home";
+import MainChat from "./Main/MainChat";
 
 export const context = createContext();
 function App() {
@@ -20,8 +21,10 @@ function App() {
           <Routes>
             <Route path="/" element={<LogIn />} />
             <Route path="/signUp" element={<SignUp />} />
-            <Route path="/chat" element={<ChatPage />} />
-            <Route path="/Home" element={<Home />} />
+            <Route path="/chat" element={<MainChat />}>
+              <Route index path="/chat/contact" element={<ChatPage />} />
+              <Route path="/chat/Home" element={<Home />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </context.Provider>

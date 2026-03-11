@@ -25,7 +25,7 @@ const SignUp = () => {
       console.log(status);
       if (status === 200) {
         setErrors({});
-        navigate("/chat");
+        navigate("/chat/contact");
       }
       console.log(api.data);
     } catch (error) {

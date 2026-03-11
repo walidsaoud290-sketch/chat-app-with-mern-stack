@@ -23,7 +23,7 @@ const LogIn = () => {
       console.log(status);
       if (status === 200) {
         setErrors({});
-        navigate("/chat");
+        navigate("/chat/contact");
         const data = api.data;
         console.log(data);
       }

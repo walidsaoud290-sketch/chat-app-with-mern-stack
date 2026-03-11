@@ -7,7 +7,6 @@ import Users from "../Users/Users";
 const ChatPage = () => {
   return (
     <>
-      <Header />
       <div className="parent">
         <div className="div1">
           <Users />
