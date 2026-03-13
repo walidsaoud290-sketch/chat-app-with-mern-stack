@@ -28,6 +28,7 @@ export const connect_webSockets = (server) => {
       io.emit("receive_message", data);
     });
 
+    
     // image
     socket.on("send_image", (data) => {
       messages.push(data);

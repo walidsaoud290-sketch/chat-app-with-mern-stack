@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import generateToken from "../utils/generateToken.js";
+import { generateRefreshToken, generateToken } from "../utils/generateToken.js";
 import User from "../models/User.js";
 
 const validationEmail = (email) => {
@@ -53,10 +53,13 @@ export const LogIn = async (req, res) => {
         error_message: "Invalid Password",
       });
     }
+
     const token = generateToken(user._id, res);
+    const refresh_token = generateRefreshToken(user._id, res);
     return res.json({
-      status: true,
+      user: user,
       token: token,
+      refresh_token: refresh_token,
     });
   } catch (error) {
     return res.status(400).json({
@@ -107,6 +110,7 @@ export const signUp = async (req, res) => {
       username,
       email,
       password: Hash_password,
+      role: "user",
     });
 
     if (newUser) {
@@ -131,4 +135,6 @@ export const signUp = async (req, res) => {
 };
 
 // Logout
-const logout = async (req, res) => {};
+const logout = async (req, res) => {
+  
+};
