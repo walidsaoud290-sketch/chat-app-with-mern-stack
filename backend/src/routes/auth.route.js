@@ -1,5 +1,5 @@
 import express from "express";
-import { LogIn, signUp } from "../controller/auth.controller.js";
+import { LogIn, logout, signUp } from "../controller/auth.controller.js";
 import { limiter } from "../rateLimiting/limiting.js";
 
 const router = express.Router();
@@ -8,7 +8,5 @@ router.post("/login", limiter, LogIn);
 
 router.post("/signUp", signUp);
 
-router.post("/logout", (req, res) => {
-  res.send("logout server");
-});
+router.post("/logout",logout);
 export default router;

@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { context } from "../App";
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const { user } = useContext(context);
+  const { user,userApp } = useContext(context);
   const getUsers = async () => {
     try {
       const api = await useGetMethod("/data/users", user);

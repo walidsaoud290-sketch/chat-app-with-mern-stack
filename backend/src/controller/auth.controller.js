@@ -58,8 +58,6 @@ export const LogIn = async (req, res) => {
     const refresh_token = generateRefreshToken(user._id, res);
     return res.json({
       user: user,
-      token: token,
-      refresh_token: refresh_token,
     });
   } catch (error) {
     return res.status(400).json({
@@ -115,11 +113,12 @@ export const signUp = async (req, res) => {
 
     if (newUser) {
       const token = generateToken(newUser._id, res);
-      const refresh_token = generateRefreshToken(newUser._id,res);
+      const refresh_token = generateRefreshToken(newUser._id, res);
       await newUser.save();
       res.status(200).json({
-        refresh_token: refresh_token,
-        token: token,
+        id:user._id,
+        username: username,
+        email: email,
       });
     } else {
       res.status(400).json({
@@ -134,6 +133,20 @@ export const signUp = async (req, res) => {
 };
 
 // Logout
-const logout = async (req, res) => {
+export const logout = async (req, res) => {
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "strict",
+  });
 
+  res.clearCookie("refresh_token",{
+    httpOnly:true,
+    secure:false,
+    sameSite:"strict"
+  });
+
+  return res.json({
+    message:"Logout successfuly"
+  });
 };

@@ -4,16 +4,16 @@ import User from "../models/User.js";
 dotenv.config();
 
 export const verifyToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  if (!authHeader) return res.sendStatus(401);
-  console.log(authHeader);
-
-  const token = authHeader.split(" ")[1];
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403); // invalid token
-    req.user = decoded.username;
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(token,process.env.JWT_SECRET);
+    req.userData = decoded;
     next();
-  });
+  } catch (error) {
+    return res.status(400).json({
+      message:"Error middleware jwt"
+    })
+  }
 };
 
 export const verifyAdmin = async (req, res, next) => {

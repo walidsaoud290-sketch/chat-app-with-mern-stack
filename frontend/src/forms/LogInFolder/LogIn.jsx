@@ -6,7 +6,6 @@ import { useContext } from "react";
 import { context } from "../../App";
 import { useEffect } from "react";
 const LogIn = () => {
-  const { user, setUser } = useContext(context);
   const email = useRef();
   const password = useRef();
   const { errors, setErrors } = useContext(context);
@@ -24,7 +23,6 @@ const LogIn = () => {
       console.log(status);
       if (status === 200) {
         setErrors({});
-        setUser(JSON.stringify(api.data));
         navigate("/chat/contact");
       }
     } catch (error) {

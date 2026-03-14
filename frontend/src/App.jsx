@@ -9,14 +9,17 @@ import ChatPage from "./ChatPage/ChatPage";
 import Home from "./HomeFolder/Home";
 import MainChat from "./Main/MainChat";
 import Settings from "./Settings/Settings";
+import { useRef } from "react";
+import Logout from "./forms/LogoutFolder/Logout";
 
 export const context = createContext();
 function App() {
   const [errors, setErrors] = useState({});
   const [user, setUser] = useState({});
+  const userApp = useRef();
   return (
     <>
-      <context.Provider value={{ errors, setErrors, user, setUser }}>
+      <context.Provider value={{ errors, setErrors, user, setUser, userApp }}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LogIn />} />
@@ -25,6 +28,7 @@ function App() {
               <Route index path="/chat/contact" element={<ChatPage />} />
               <Route path="/chat/Home" element={<Home />} />
               <Route path="/chat/Settings" element={<Settings />} />
+              <Route path="/chat/Logout" element={<Logout />} />
             </Route>
           </Routes>
         </BrowserRouter>
