@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useGetMethod } from "../fetching_to_backend/to_backend";
 import "./Users.css";
+import { useContext } from "react";
+import { context } from "../App";
 const Users = () => {
   const [users, setUsers] = useState([]);
-
+  const { user } = useContext(context);
   const getUsers = async () => {
-    // https://img.daisyui.com/images/profile/demo/anakeen@192.webp
     try {
-      const api = await useGetMethod("/data/users");
+      const api = await useGetMethod("/data/users", user);
       const data = api.data;
       if (data) {
         setUsers(data.users);
@@ -18,13 +19,13 @@ const Users = () => {
       if (error.response) {
         console.log(error.response);
       }
-      console.log(error);
+      throw new Error("Error Users :" + error);
     }
   };
 
   useEffect(() => {
     getUsers();
-    console.log(users);
+    console.log(user);
   }, []);
 
   return (

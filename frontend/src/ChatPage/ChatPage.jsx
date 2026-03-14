@@ -2,8 +2,10 @@ import React from "react";
 import "./ChatPage.css";
 import Chat from "../chatFolder/Chat";
 import UsersComponent from "../UsersComponentFolder/UsersComponent";
-import Header from "../Header/Header";
 import Users from "../Users/Users";
+import { useContext } from "react";
+import { context } from "../App";
+import { useEffect } from "react";
 const ChatPage = () => {
   return (
     <>

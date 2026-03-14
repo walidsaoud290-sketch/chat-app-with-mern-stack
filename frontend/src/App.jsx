@@ -8,15 +8,15 @@ import Chat from "./chatFolder/Chat";
 import ChatPage from "./ChatPage/ChatPage";
 import Home from "./HomeFolder/Home";
 import MainChat from "./Main/MainChat";
+import Settings from "./Settings/Settings";
 
 export const context = createContext();
 function App() {
-  const [token, setToken] = useState("");
   const [errors, setErrors] = useState({});
-
+  const [user, setUser] = useState({});
   return (
     <>
-      <context.Provider value={{ errors, setErrors, token, setToken }}>
+      <context.Provider value={{ errors, setErrors, user, setUser }}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LogIn />} />
@@ -24,6 +24,7 @@ function App() {
             <Route path="/chat" element={<MainChat />}>
               <Route index path="/chat/contact" element={<ChatPage />} />
               <Route path="/chat/Home" element={<Home />} />
+              <Route path="/chat/Settings" element={<Settings />} />
             </Route>
           </Routes>
         </BrowserRouter>

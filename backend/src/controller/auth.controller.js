@@ -115,11 +115,10 @@ export const signUp = async (req, res) => {
 
     if (newUser) {
       const token = generateToken(newUser._id, res);
+      const refresh_token = generateRefreshToken(newUser._id,res);
       await newUser.save();
       res.status(200).json({
-        id: newUser._id,
-        email: newUser.email,
-        password: newUser.password,
+        refresh_token: refresh_token,
         token: token,
       });
     } else {
@@ -136,5 +135,5 @@ export const signUp = async (req, res) => {
 
 // Logout
 const logout = async (req, res) => {
-  
+
 };

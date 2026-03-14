@@ -8,6 +8,7 @@ import { connectToMongo } from "./config/db.js";
 import { connect_webSockets } from "./socket/socket.js";
 import dataRoutes from "./routes/data.route.js";
 
+
 dotenv.config();
 
 const app = express();
@@ -31,5 +32,6 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, async () => {
   connectToMongo();
+
   console.log("Server running on port", PORT);
 });

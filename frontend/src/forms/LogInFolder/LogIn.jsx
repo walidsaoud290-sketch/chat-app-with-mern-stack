@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { context } from "../../App";
 import { useEffect } from "react";
 const LogIn = () => {
+  const { user, setUser } = useContext(context);
   const email = useRef();
   const password = useRef();
   const { errors, setErrors } = useContext(context);
@@ -23,16 +24,12 @@ const LogIn = () => {
       console.log(status);
       if (status === 200) {
         setErrors({});
+        setUser(JSON.stringify(api.data));
         navigate("/chat/contact");
-        const data = api.data;
-        console.log(data);
       }
     } catch (error) {
-      if (error.response) {
-        console.log(error.response.data);
-        setErrors(error.response.data);
-      }
-      console.log("error login:" + error);
+      console.log(error);
+      setErrors(error);
     }
   };
 
@@ -124,6 +121,7 @@ const LogIn = () => {
             {errors?.error_message && (
               <p className="text-danger"> {errors.error_message} </p>
             )}
+            {errors?.error && <p className="text-danger"> {errors.error} </p>}
             <button type="submit" className="button">
               Sign in
             </button>

@@ -1,42 +1,44 @@
 import axios from "axios";
 
-export const usePostMethod = async (path, data) => {
-  const token = localStorage.getItem("token");
-
-  const headers = {
+const apiClient = axios.create({
+  baseURL: "http://localhost:5000/api",
+  withCredentials: true,
+  headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-  };
-  if (token) {
-    headers.Authorization = "Bearer " + token;
-  }
+  },
+});
+
+export const usePostMethod = async (path, data) => {
   try {
-    const api = await axios.post("http://localhost:5000/api" + path, data, {
-      headers,
-    });
-    return api;
+    const response = await apiClient.post(path, data);
+    return response;
   } catch (error) {
-    console.log("error fetching data from methode POST :" + error);
-    throw error;
+    if (error.response) {
+      throw error.response.data;
+    } else if (error.request) {
+      console.log("No response from server");
+      throw new Error("No response from server");
+    } else {
+      console.log("Request error:", error.message);
+      throw error;
+    }
   }
 };
 
-export const useGetMethod = async (path) => {
+export const useGetMethod = async (path, data) => {
   try {
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    };
-    const api = await axios.get(
-      "http://localhost:5000/api" + path,
-      {},
-      {
-        headers,
-      },
-    );
-    return api;
+    const response = await apiClient.get(path, data);
+    return response;
   } catch (error) {
-    console.log("Erreur in GET methode :" + error);
-    throw error;
+    console.log("Error in GET method:", error);
+
+    if (error.response) {
+      throw error.response.data;
+    } else if (error.request) {
+      throw new Error("No response from server");
+    } else {
+      throw error;
+    }
   }
 };

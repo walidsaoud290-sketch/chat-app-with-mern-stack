@@ -4,6 +4,6 @@ import { verifyAdmin, verifyToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/users", return_data);
+router.get("/users", verifyAdmin, return_data);
 
 export default router;

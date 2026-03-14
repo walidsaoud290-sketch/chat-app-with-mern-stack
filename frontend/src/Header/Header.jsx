@@ -60,20 +60,20 @@ const Header = () => {
             </button>
             <ul className="dropdown-content profile-dropdown">
               <li>
-                <a href="#" className="dropdown-item">
+                <Link to="/chat/Profile" className="dropdown-item">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="dropdown-item">
+                <Link to="/chat/Settings" className="dropdown-item">
                   Settings
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="dropdown-item">
+                <Link to="/chat/Logout" className="dropdown-item">
                   Logout
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
