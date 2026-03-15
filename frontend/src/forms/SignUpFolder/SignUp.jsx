@@ -9,7 +9,7 @@ const SignUp = () => {
   const username = useRef();
   const email = useRef();
   const password = useRef();
-  const { errors, setErrors ,setUser,userApp} = useContext(context);
+  const { errors, setErrors, setUser, userApp } = useContext(context);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,7 +25,7 @@ const SignUp = () => {
       console.log(status);
       if (status === 200) {
         setErrors({});
-        userApp.current.value = {username,email,password};
+        setIsFormValid(true);
         navigate("/chat/contact");
       }
       console.log(api.data);

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 const LogIn = () => {
   const email = useRef();
   const password = useRef();
-  const { errors, setErrors } = useContext(context);
+  const { errors, setErrors ,setIsFormValid} = useContext(context);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -23,6 +23,7 @@ const LogIn = () => {
       console.log(status);
       if (status === 200) {
         setErrors({});
+        setIsFormValid(true);
         navigate("/chat/contact");
       }
     } catch (error) {
