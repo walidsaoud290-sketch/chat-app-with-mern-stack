@@ -26,7 +26,7 @@ export const usePostMethod = async (path, data) => {
   }
 };
 
-export const useGetMethod = async (path, data) => {
+export const useGetMethod = async (path, data = {}) => {
   try {
     const response = await apiClient.get(path, data);
     return response;

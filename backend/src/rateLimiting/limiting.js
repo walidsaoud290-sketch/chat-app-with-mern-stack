@@ -14,5 +14,6 @@ export const limiter = RateLimit({
   max: 5,
   message: {
     error: "Too many attempts, try again later",
+    
   },
 });

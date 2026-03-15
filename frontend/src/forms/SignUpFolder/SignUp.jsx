@@ -24,6 +24,7 @@ const SignUp = () => {
       const status = api.status;
       console.log(status);
       if (status === 200) {
+        localStorage.setItem("email", JSON.stringify(email.current.value));
         setErrors({});
         setIsFormValid(true);
         navigate("/chat/contact");

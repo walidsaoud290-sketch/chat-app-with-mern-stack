@@ -17,7 +17,7 @@ const generateToken = (id, res) => {
 
 const generateRefreshToken = (id, res) => {
   const refresh_token = jwt.sign({ id }, process.env.REFRESH_SECRET, {
-    expiresIn: "1d",
+    expiresIn: "30d",
   });
 
   res.cookie("refresh_token", refresh_token, {

@@ -2,12 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import http from "http";
-
+import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
 import { connectToMongo } from "./config/db.js";
 import { connect_webSockets } from "./socket/socket.js";
 import dataRoutes from "./routes/data.route.js";
-
 
 dotenv.config();
 
@@ -20,6 +19,7 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/data", dataRoutes);

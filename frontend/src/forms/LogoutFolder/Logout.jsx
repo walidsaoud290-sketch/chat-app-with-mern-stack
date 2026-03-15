@@ -13,6 +13,7 @@ const Logout = () => {
       if (api.status === 200) {
         console.log("Logout successfuly");
         console.log(api.data);
+        localStorage.removeItem("email");
         navigate("/");
         setIsFormValid(false);
       }

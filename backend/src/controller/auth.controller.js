@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import { generateRefreshToken, generateToken } from "../utils/generateToken.js";
 import User from "../models/User.js";
+import { redisClient } from "../config/redis.js";
 
 const validationEmail = (email) => {
   const isCorrecte = email.split("@");
@@ -56,6 +57,8 @@ export const LogIn = async (req, res) => {
 
     const token = generateToken(user._id, res);
     const refresh_token = generateRefreshToken(user._id, res);
+
+    await redisClient.set("refresh_token:"+user._id,refresh_token);
     return res.json({
       user: user,
     });
@@ -114,9 +117,11 @@ export const signUp = async (req, res) => {
     if (newUser) {
       const token = generateToken(newUser._id, res);
       const refresh_token = generateRefreshToken(newUser._id, res);
+
+      await redisClient.set("refresh_token:"+newUser._id,refresh_token);
       await newUser.save();
       res.status(200).json({
-        id:user._id,
+        id: newUser._id,
         username: username,
         email: email,
       });
@@ -140,13 +145,13 @@ export const logout = async (req, res) => {
     sameSite: "strict",
   });
 
-  res.clearCookie("refresh_token",{
-    httpOnly:true,
-    secure:false,
-    sameSite:"strict"
+  res.clearCookie("refresh_token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "strict",
   });
 
   return res.json({
-    message:"Logout successfuly"
+    message: "Logout successfuly",
   });
 };

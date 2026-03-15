@@ -1,16 +1,45 @@
+import { redisClient } from "../config/redis.js";
 import User from "../models/User.js";
 
-export const return_data = async (req, res) => {
+export const get_users = async (req, res) => {
   try {
     // retourne seulement le champs name (et _id par defaut)
     // const users = await User.find({},'name);
-    const data = await User.find({}); // {vide} = tous les documents;
+    const data = await User.find({}).select("username email role"); // {vide} = tous les documents;
     res.status(200).json({
       users: data,
     });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       error: "Erreur return data :" + error,
+    });
+  }
+};
+
+export const get_limit_users = async (req, res) => {
+  try {
+    const users_from_redis = await redisClient.get("users_chat");
+
+    if (users_from_redis) {
+      const parsed = JSON.parse(users_from_redis);
+      if (parsed.length <= 0) {
+        return res.status(400).json({ message: "Empty list users" });
+      }
+      return res.status(200).json({ users: parsed });
+    }
+
+    const users = await User.find({});
+
+    if (users.length <= 0) {
+      return res.status(400).json({ message: "Empty list users" });
+    }
+
+    await redisClient.set("users_chat", JSON.stringify(users), { EX: 60 });
+    console.log("Users data :"+users);
+    return res.status(200).json({ users :users});
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error get limiting users: " + error,
     });
   }
 };

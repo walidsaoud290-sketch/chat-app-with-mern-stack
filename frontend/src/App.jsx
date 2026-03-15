@@ -26,15 +26,17 @@ function App() {
           <Routes>
             <Route path="/" element={<LogIn />} />
             <Route path="/signUp" element={<SignUp />} />
-            {isFormValid && (
-              <Route path="/chat" element={<MainChat />}>
-                <Route index path="/chat/contact" element={<ChatPage />} />
-                <Route path="/chat/Home" element={<Home />} />
-                <Route path="/chat/Settings" element={<Settings />} />
-                <Route path="/chat/Logout" element={<Logout />} />
-              </Route>
-            )}
-            <Route path="*" element={<h1>Not found</h1>} />
+            <Route path="/chat" element={<MainChat />}>
+              <Route index path="/chat/contact" element={<ChatPage />} />
+              <Route path="/chat/Home" element={<Home />} />
+              <Route path="/chat/Settings" element={<Settings />} />
+              <Route path="/chat/Logout" element={<Logout />} />
+            </Route>
+
+            <Route
+              path="*"
+              element={<h1 className="text-white">Not found Page</h1>}
+            />
           </Routes>
         </BrowserRouter>
       </context.Provider>
