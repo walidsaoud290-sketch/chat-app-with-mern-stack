@@ -1,4 +1,3 @@
-import React from "react";
 import Header from "../Header/Header";
 import { Navigate, Outlet } from "react-router-dom";
 import { useState } from "react";
@@ -17,7 +16,7 @@ const MainChat = () => {
         if (api.status == 200) {
           console.log("is authenticated ");
           setIsAuth(true);
-        }else{
+        } else {
           setIsAuth(false);
         }
         console.log(api);
@@ -36,9 +35,15 @@ const MainChat = () => {
       <div className="header">
         <Header />
       </div>
-      {isAuth ? <><div>
-          <Outlet />
-        </div></>:<Navigate to={"/"} replace />}
+      {isAuth ? (
+        <>
+          <div>
+            <Outlet />
+          </div>
+        </>
+      ) : (
+        <Navigate to={"/"} replace />
+      )}
     </>
   );
 };

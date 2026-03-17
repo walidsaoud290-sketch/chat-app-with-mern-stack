@@ -35,6 +35,7 @@ const SignUp = () => {
         console.log(error.response.data);
         setErrors(error.response.data);
       }
+      setErrors(error);
       console.log("Error Sign up :" + error);
     }
   };
@@ -158,9 +159,8 @@ const SignUp = () => {
             {errors?.password && (
               <p className="text-danger"> {errors.password} </p>
             )}
-            {errors?.error_message && (
-              <p className="text-danger"> {errors.error_message} </p>
-            )}
+            {errors?.error && <p className="text-danger"> {errors.error} </p>}
+
             <button type="submit" className="button" onClick={handleSubmit}>
               Sign up
             </button>

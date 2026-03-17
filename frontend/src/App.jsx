@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LogIn from "./forms/LogInFolder/LogIn";
@@ -8,20 +8,18 @@ import ChatPage from "./ChatPage/ChatPage";
 import Home from "./HomeFolder/Home";
 import MainChat from "./Main/MainChat";
 import Settings from "./Settings/Settings";
-import { useRef } from "react";
 import Logout from "./forms/LogoutFolder/Logout";
+import Profile from "./ProfileFolder/Profile";
 
 export const context = createContext();
 function App() {
   const [errors, setErrors] = useState({});
   const [user, setUser] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
-  const userApp = useRef();
+
   return (
     <>
-      <context.Provider
-        value={{ errors, setErrors, user, setUser, userApp, setIsFormValid }}
-      >
+      <context.Provider value={{ errors, setErrors ,setIsFormValid}}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LogIn />} />
@@ -29,6 +27,7 @@ function App() {
             <Route path="/chat" element={<MainChat />}>
               <Route index path="/chat/contact" element={<ChatPage />} />
               <Route path="/chat/Home" element={<Home />} />
+              <Route path="/chat/Profile/:email" element={<Profile />} />
               <Route path="/chat/Settings" element={<Settings />} />
               <Route path="/chat/Logout" element={<Logout />} />
             </Route>

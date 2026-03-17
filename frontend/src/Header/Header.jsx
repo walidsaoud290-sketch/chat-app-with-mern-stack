@@ -1,8 +1,14 @@
 import React from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import CryptoJS from "crypto-js";
 
 const Header = () => {
+  const email = localStorage.getItem("email");
+
+  const secret = import.meta.env.VITE_SECRET_CRYPTAGE;
+  const encrypted = encodeURIComponent(CryptoJS.AES.encrypt(email, secret).toString());
+
   return (
     <header className="header">
       <nav className="navbar">
@@ -60,7 +66,10 @@ const Header = () => {
             </button>
             <ul className="dropdown-content profile-dropdown">
               <li>
-                <Link to="/chat/Profile" className="dropdown-item">
+                <Link
+                  to={"/chat/Profile/" + encrypted}
+                  className="dropdown-item"
+                >
                   Profile
                   <span className="badge">New</span>
                 </Link>

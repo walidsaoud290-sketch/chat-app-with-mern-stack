@@ -1,5 +1,9 @@
 import express from "express";
-import { get_limit_users, get_users } from "../controller/data.controller.js";
+import {
+  get_limit_users,
+  get_users,
+  getUser,
+} from "../controller/data.controller.js";
 import {
   verifyAdmin,
   verifyRefreshToken,
@@ -10,4 +14,6 @@ const router = express.Router();
 
 router.get("/users", verifyToken, verifyAdmin, get_users);
 router.get("/users_amies", verifyToken, get_limit_users);
+router.get("/user", verifyToken, getUser);
+
 export default router;

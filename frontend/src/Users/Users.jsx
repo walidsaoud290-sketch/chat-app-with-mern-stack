@@ -4,6 +4,7 @@ import { useGetMethod } from "../fetching_to_backend/to_backend";
 import "./Users.css";
 
 const Users = ({ users }) => {
+  
   return (
     <div className="users">
       {users.map((user, _) => {

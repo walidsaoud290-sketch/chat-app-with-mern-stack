@@ -35,11 +35,30 @@ export const get_limit_users = async (req, res) => {
     }
 
     await redisClient.set("users_chat", JSON.stringify(users), { EX: 60 });
-    console.log("Users data :"+users);
-    return res.status(200).json({ users :users});
+    console.log("Users data :" + users);
+    return res.status(200).json({ users: users });
   } catch (error) {
     return res.status(500).json({
       message: "Error get limiting users: " + error,
+    });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const {id} = req.userData;
+    console.log("id user :",id);
+    if (!id) return res.status(400).json({ message: "Unauthorized" });
+    const user =await User.findById(id);
+
+    if (!user) return res.status(400).json({ message: "Not found user" });
+
+    return res.status(200).json({
+      user: user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error getUser :" + error,
     });
   }
 };

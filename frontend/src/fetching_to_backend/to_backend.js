@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
   headers: {
     Accept: "application/json",
@@ -28,7 +28,7 @@ export const usePostMethod = async (path, data) => {
 
 export const useGetMethod = async (path, data = {}) => {
   try {
-    const response = await apiClient.get(path, data);
+    const response = await apiClient.get(path,data );
     return response;
   } catch (error) {
     console.log("Error in GET method:", error);
