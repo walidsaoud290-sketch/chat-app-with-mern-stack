@@ -3,7 +3,7 @@ import "./Chat.css";
 import { io } from "socket.io-client";
 import { days } from "../days";
 
-const Chat = () => {
+const Chat = ({userMessage}) => {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const inputMessage = useRef();

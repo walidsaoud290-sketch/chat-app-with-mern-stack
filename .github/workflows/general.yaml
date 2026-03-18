@@ -15,6 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+    
         with:
           node-version: '18'
       - run: npm install
@@ -22,6 +23,7 @@ jobs:
   test-frontend:
     runs-on: ubuntu-latest
     name: Testing frontend
+    
     defaults:
       run:
         working-directory: ./frontend

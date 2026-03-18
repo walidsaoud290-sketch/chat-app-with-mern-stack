@@ -5,19 +5,19 @@ import Users from "../Users/Users";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetMethod } from "../fetching_to_backend/to_backend";
+
 const ChatPage = () => {
   const [users, setUsers] = useState([]);
+  const [userMessage,setUserMessage] = useState({});
 
   const getUsers = async () => {
-    const email = localStorage.getItem("email");
     try {
       const api = await useGetMethod("/data/users_amies");
       console.log(api);
       const data = api.data.users;
       if (data && data.length > 0) {
         console.log(data);
-        const Final_users = data.filter((e) => e.email !== email);
-        setUsers(Final_users);
+        setUsers(data);
       }
       console.log(data.users);
     } catch (error) {
@@ -38,14 +38,14 @@ const ChatPage = () => {
           {users.length <= 0 ? (
             <p className="text-white">there is no friends</p>
           ) : (
-            <Users users={users} />
+            <Users users={users} setUserMessage={setUserMessage} />
           )}
         </div>
         <div className="div2">
-          <Chat />
+          <Chat  userMessage={userMessage} />
         </div>
         <div className="div3">
-          <UsersComponent />
+          <UsersComponent userMessage={userMessage}/>
         </div>
       </div>
     </>

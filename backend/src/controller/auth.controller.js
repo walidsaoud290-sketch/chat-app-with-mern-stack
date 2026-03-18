@@ -111,7 +111,6 @@ export const signUp = async (req, res) => {
       username,
       email,
       password: Hash_password,
-      role: "user",
     });
 
     if (newUser) {
