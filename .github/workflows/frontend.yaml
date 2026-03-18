@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - "frontend/**"
-    branches: ["main","master"]
+    branches: ["main", "master"]
   pull_request:
     paths:
       - "frontend/**"
-    branches: [main,master]
+    branches: [main, master]
 
 jobs:
   frontend-chat:
@@ -22,16 +22,18 @@ jobs:
       - name: INSTALLER NODE
         uses: actions/setup-node@v3
         with:
-          node-verion: '18'
+          node-verion: "18"
       - name: INSTALLER DEPENDENCIES
-        run: npm install  
+        run: npm install
 
       - name: RUN TEST
         run: npm test
 
       - name: BUILD
         run: npm run build
-
+        env:
+          VITE_BACKEND_URL: http://localhost:5000/api
+          VITE_SECRET_CRYPTAGE: mySecretKeyForCryptage
   test-frontend:
     runs-on: ubuntu-latest
     needs: frontend-chat
@@ -44,7 +46,3 @@ jobs:
 
       - name: DEPLOY
         run: echo "DEPLOY FRONTEND ..."
-
-        
-    
-  

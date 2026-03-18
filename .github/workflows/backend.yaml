@@ -3,16 +3,15 @@ name: CI/CD BACKEND MERN STACK CHAT APPLICATION
 on:
   push:
     paths:
-      - 'backend/**'
+      - "backend/**"
     branches: ["main,dev"]
   pull_request:
     paths:
-      - 'backend/**'
+      - "backend/**"
     branches: ["main,dev"]
 
 jobs:
   test-backend:
-
     name: test backend
     runs-on: ubuntu-latest
 
@@ -20,6 +19,16 @@ jobs:
       run:
         working-directory: ./backend # on travaille dans /backend
 
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
     steps:
       - name: CHECKOUT THE CODE
         uses: actions/checkout@v4
@@ -27,8 +36,16 @@ jobs:
       - name: Installer node js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-      
+          node-version: "18"
+
+        env:
+          PORT: 5000
+          MONGO_URI: mongodb://localhost:27017/db_chat
+          JWT_SECRET: fab5b1b57daff5bff75640ebb61576312be28a52ff30e35573a40a8b75e94e90bee41e9939c25f23157d0e876c3976506a137348776268132cacbc9c1556eda1
+          REFRESH_SECRET: 4b3805bb252079fca5cb26d82bdbd2acb3db18b8088238d2d7b1d8951bd36b26b3960a66299e19c674cf5324fc0870160919d3c8514ef8888d739baf7579a818
+          NODE_ENV: development #if you are still development or production
+          REDIS_URI: redis://localhost:6379
+        
       - name: Installer dependencies
         run: npm install
 
@@ -45,10 +62,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: BUILD IMAGE DOCKER
-        run: | 
+        run: |
           cd backend 
           docker build -t backend-chat .
-        
-      - name: DEPLOY  
+
+      - name: DEPLOY
         run: echo "Deploy backend ..."
-      
