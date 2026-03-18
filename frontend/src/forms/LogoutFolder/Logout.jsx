@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { context } from "../../App";
 
 const Logout = () => {
-  const { setIsFormValid } = useContext(context);
+  const { setIsAuth } = useContext(context);
   const navigate = useNavigate();
   const logout = async () => {
     try {
@@ -13,9 +13,8 @@ const Logout = () => {
       if (api.status === 200) {
         console.log("Logout successfuly");
         console.log(api.data);
-        localStorage.removeItem("email");
         navigate("/");
-        setIsFormValid(false);
+        setIsAuth(false);
       }
     } catch (error) {
       throw Error("Error Logout :" + error);

@@ -21,6 +21,7 @@ export const connect_webSockets = (server) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
+
     // message texte
     socket.on("send_message", (data) => {
       messages.push(data);
@@ -43,33 +44,3 @@ export const connect_webSockets = (server) => {
   });
 };
 
-//
-const connection_to_webSockets = (server) => {
-  const io = new Server(server, {
-    cors: {
-      origin: "url_frontend",
-      methods: ["GET"],
-    },
-  });
-
-  io.on("connection", (socket) => {
-    console.log("User connected :" + socket.id);
-
-    // Si il y a des messages
-    socket.on("send_message", (data) => {
-      messages.push(data);
-      io.emit("receive_message", data);
-    });
-
-    // Si il y a des images
-
-    socket.on("send_image", (data) => {
-      messages.push(data);
-      io.emit("receiva_image");
-    });
-
-    socket.disconnect("disconnect", () => {
-      console.log("User disconnected :" + socket.id);
-    });
-  });
-};

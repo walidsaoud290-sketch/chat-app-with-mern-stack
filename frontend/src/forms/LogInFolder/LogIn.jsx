@@ -8,7 +8,7 @@ import { useEffect } from "react";
 const LogIn = () => {
   const email = useRef();
   const password = useRef();
-  const { errors, setErrors, setIsFormValid } = useContext(context);
+  const { errors, setErrors ,setIsAuth} = useContext(context);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,12 +19,12 @@ const LogIn = () => {
         email: email.current.value,
         password: password.current.value,
       });
+
       const status = api.status;
-      console.log(status);
+
       if (status === 200) {
-        localStorage.setItem("email", email.current.value);
+        setIsAuth(true);
         setErrors({});
-        setIsFormValid(true);
         navigate("/chat/contact");
       }
     } catch (error) {

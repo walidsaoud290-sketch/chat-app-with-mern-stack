@@ -58,7 +58,7 @@ export const LogIn = async (req, res) => {
     const token = generateToken(user._id, res);
     const refresh_token = generateRefreshToken(user._id, res);
 
-    await redisClient.set("refresh_token:"+user._id,refresh_token);
+    await redisClient.set("refresh_token:" + user._id, refresh_token);
     return res.json({
       user: user,
     });
@@ -99,7 +99,7 @@ export const signUp = async (req, res) => {
         password: "Password is required",
       });
     }
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
         error_message: "Email already exist",
@@ -115,23 +115,26 @@ export const signUp = async (req, res) => {
     });
 
     if (newUser) {
+      await newUser.save();
       const token = generateToken(newUser._id, res);
       const refresh_token = generateRefreshToken(newUser._id, res);
 
-      await redisClient.set("refresh_token:"+newUser._id,refresh_token);
-      await newUser.save();
-      res.status(200).json({
+      await redisClient.set("refresh_token:" + newUser._id, refresh_token, {
+        EX: 60 * 60 * 24 * 7,
+      });
+
+      return res.status(200).json({
         id: newUser._id,
         username: username,
         email: email,
       });
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         error_message: "Invalid data",
       });
     }
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       error: "Error controller Sign up:" + error,
     });
   }

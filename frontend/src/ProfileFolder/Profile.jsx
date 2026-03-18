@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Profile.css";
-import { useGetMethod, usePostMethod } from "../fetching_to_backend/to_backend";
+import { useGetMethod} from "../fetching_to_backend/to_backend";
 import { useParams } from "react-router-dom";
 import CryptoJS from "crypto-js";
 
@@ -8,8 +8,8 @@ const Profile = () => {
   
   const [user, setUser] = useState({});
 
-  const {email} = useParams();
-  const decodeEmail = decodeURIComponent(email);
+  const {id} = useParams();
+  const decodeEmail = decodeURIComponent(id);
 
   const decrypte = CryptoJS.AES.decrypt(
     decodeEmail,

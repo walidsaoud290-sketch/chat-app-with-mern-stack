@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import "./SignUp.css";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ const SignUp = () => {
   const username = useRef();
   const email = useRef();
   const password = useRef();
-  const { errors, setErrors, setUser, userApp } = useContext(context);
+  const { errors, setErrors, setIsAuth } = useContext(context);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -22,11 +22,11 @@ const SignUp = () => {
         password: password.current.value,
       });
       const status = api.status;
+
       console.log(status);
       if (status === 200) {
-        localStorage.setItem("email", JSON.stringify(email.current.value));
+        setIsAuth(true);
         setErrors({});
-        setIsFormValid(true);
         navigate("/chat/contact");
       }
       console.log(api.data);
@@ -36,6 +36,9 @@ const SignUp = () => {
         setErrors(error.response.data);
       }
       setErrors(error);
+      if (error.response) {
+        console.log("Error response :" + error.response);
+      }
       console.log("Error Sign up :" + error);
     }
   };
@@ -158,6 +161,9 @@ const SignUp = () => {
             </div>
             {errors?.password && (
               <p className="text-danger"> {errors.password} </p>
+            )}
+            {errors?.error_message && (
+              <p className="text-danger"> {errors.error_message} </p>
             )}
             {errors?.error && <p className="text-danger"> {errors.error} </p>}
 

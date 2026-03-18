@@ -1,13 +1,37 @@
-import React from "react";
+import  { useEffect } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
 import CryptoJS from "crypto-js";
+import { useGetMethod } from "../fetching_to_backend/to_backend";
+import { useState } from "react";
 
 const Header = () => {
-  const email = localStorage.getItem("email");
-
+    const [id_crypte,setIdCrypte] = useState("");
   const secret = import.meta.env.VITE_SECRET_CRYPTAGE;
-  const encrypted = encodeURIComponent(CryptoJS.AES.encrypt(email, secret).toString());
+
+  const getUser = async () => {
+    try {
+      const api = await useGetMethod("/data/user");
+
+      console.log(api);
+      if (api.status === 200) {
+        console.log(api.data.user._id);
+        const crypte = encodeURIComponent(
+          CryptoJS.AES.encrypt(api.data.user._id, secret).toString(),
+        );
+        setIdCrypte(crypte);
+      }
+    } catch (error) {
+      console.log("Error getting the user :" + error);
+      if (error.response) {
+        console.log(error.response);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <header className="header">
@@ -67,7 +91,7 @@ const Header = () => {
             <ul className="dropdown-content profile-dropdown">
               <li>
                 <Link
-                  to={"/chat/Profile/" + encrypted}
+                  to={"/chat/Profile/" + id_crypte}
                   className="dropdown-item"
                 >
                   Profile
@@ -75,7 +99,10 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/chat/Settings" className="dropdown-item">
+                <Link
+                  to={"/chat/Settings/" + id_crypte}
+                  className="dropdown-item"
+                >
                   Settings
                 </Link>
               </li>

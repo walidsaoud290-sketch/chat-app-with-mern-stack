@@ -7,6 +7,8 @@ export const limiter = RateLimit({
     // RedisStore permet de stocker les compteurs dans redis 
     // ? pourquoi ? Si tu utilises plusieurs instances de ton backend (load balancing), Redis garde le compteur centralisé pour tous les serveurs.
   store: new RedisStore({
+    // cette fonction permet à la librairie d'envoyer des commandes redis 
+    // args contient [commandeRedis,key,value]
     sendCommand: (...args) => redisClient.sendCommand(args),
   }),
   // max 5 requetes par minute
