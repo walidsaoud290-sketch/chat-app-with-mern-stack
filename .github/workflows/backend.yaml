@@ -1,0 +1,54 @@
+name: CI/CD BACKEND MERN STACK CHAT APPLICATION
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+    branches: ["main,dev"]
+  pull_request:
+    paths:
+      - 'backend/**'
+    branches: ["main,dev"]
+
+jobs:
+  test-backend:
+
+    name: test backend
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend # on travaille dans /backend
+
+    steps:
+      - name: CHECKOUT THE CODE
+        uses: actions/checkout@v4
+
+      - name: Installer node js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Installer dependencies
+        run: npm install
+
+      - name: RUN TESTS
+        run: npm test
+
+      - name: BUILD
+        run: npm run build
+
+  deploy-backend:
+    name: DEPLOY BACKEND
+    runs-on: ubuntu-latest
+    needs: test-backend
+    steps:
+      - uses: actions/checkout@v3
+      - name: BUILD IMAGE DOCKER
+        run: | 
+          cd backend 
+          docker build -t backend-chat .
+        
+      - name: DEPLOY  
+        run: echo "Deploy backend ..."
+      
