@@ -103,5 +103,8 @@ jobs:
           docker build -t frontend-chat .
       - name: DEPLOY FRONTEND
         run: echo "deploy frontend"
+        
+      - name: VERIFY IMAGES DOCKER
+        run: docker images
     
         
