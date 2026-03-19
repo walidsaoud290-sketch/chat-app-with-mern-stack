@@ -1,12 +1,16 @@
 import React from "react";
 import "./UsersComponent.css";
-const UsersComponent = ({userMessage}) => {
+const UsersComponent = ({ userMessage }) => {
   return (
     <>
       <div className="user">
         <div className="user-info">
           <img
-            src={ userMessage?.profilePic ? userMessage.profilePic : "https://img.daisyui.com/images/profile/demo/anakeen@192.webp"}
+            src={
+              userMessage?.profilePic
+                ? userMessage.profilePic
+                : "https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
+            }
             alt="user_image"
           />
           <h1 className="text-white"> {userMessage?.username} </h1>

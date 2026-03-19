@@ -26,7 +26,7 @@ export const verifyToken = async (req, res, next) => {
 };
 
 export const verifyRefreshToken = (req, res, next) => {
-  const token = req.body.token;
+  const token = req.cookies.refresh_token;
   try {
     if (!token)
       return res.status(401).json({

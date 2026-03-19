@@ -99,12 +99,14 @@ export const signUp = async (req, res) => {
         password: "Password is required",
       });
     }
+
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
         error_message: "Email already exist",
       });
     }
+    
     const salt = await bcrypt.genSalt(10);
     const Hash_password = await bcrypt.hash(password, salt);
     const newUser = new User({

@@ -1,8 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { useGetMethod } from "../fetching_to_backend/to_backend";
 import "./Users.css";
-
 const Users = ({ users, setUserMessage }) => {
   return (
     <div className="users">

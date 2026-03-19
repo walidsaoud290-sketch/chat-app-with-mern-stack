@@ -63,7 +63,7 @@ function App() {
           {/* Routes protégées */}
           <Route
             path="/chat"
-            element={isAuth ? <MainChat /> : <Navigate to="/" />}
+            element={isAuth ? <MainChat /> : <Navigate to="/" replace />}
           >
             <Route path="contact" element={<ChatPage />} />
             <Route path="Home" element={<Home />} />

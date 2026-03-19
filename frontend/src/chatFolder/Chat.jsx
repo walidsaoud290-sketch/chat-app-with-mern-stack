@@ -3,7 +3,7 @@ import "./Chat.css";
 import { io } from "socket.io-client";
 import { days } from "../days";
 
-const Chat = ({userMessage}) => {
+const Chat = ({ userMessage, officialUser }) => {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const inputMessage = useRef();
@@ -27,7 +27,10 @@ const Chat = ({userMessage}) => {
         content: message,
         sender: socket.id,
         timestamp: new Date().toISOString(),
-        received: false,
+        send_by: officialUser._id,
+        send_by_name: officialUser.username,
+        send_to: userMessage._id,
+        send_to_by_name: userMessage.username,
       };
       socket.emit("send_message", messageData);
       inputMessage.current.value = "";
@@ -45,6 +48,10 @@ const Chat = ({userMessage}) => {
           sender: socket.id,
           timestamp: new Date().toISOString(),
           received: false,
+          send_by: officialUser._id,
+          send_by_name:officialUser.username,
+          send_to: userMessage._id,
+          send_to_by_name:userMessage.username
         };
 
         socket.emit("send_image", imageData);

@@ -5,21 +5,27 @@ import Users from "../Users/Users";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetMethod } from "../fetching_to_backend/to_backend";
+import { useContext } from "react";
+import { contextUser } from "../Main/MainChat";
 
 const ChatPage = () => {
+  const { officialUser } = useContext(contextUser);
   const [users, setUsers] = useState([]);
-  const [userMessage,setUserMessage] = useState({});
+  const [userMessage, setUserMessage] = useState({});
 
   const getUsers = async () => {
     try {
       const api = await useGetMethod("/data/users_amies");
       console.log(api);
       const data = api.data.users;
+      const usersData = api.data.users.filter(
+        (e) => e._id !== officialUser._id,
+      );
+      console.log(officialUser);
+      console.log(usersData);
       if (data && data.length > 0) {
-        console.log(data);
-        setUsers(data);
+        setUsers(usersData);
       }
-      console.log(data.users);
     } catch (error) {
       if (error.response) {
         console.log(error.response);
@@ -30,6 +36,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     getUsers();
+    console.log(users);
   }, []);
   return (
     <>
@@ -42,10 +49,13 @@ const ChatPage = () => {
           )}
         </div>
         <div className="div2">
-          <Chat  userMessage={userMessage} />
+          <Chat userMessage={userMessage} officialUser={officialUser} />
         </div>
         <div className="div3">
-          <UsersComponent userMessage={userMessage}/>
+          <UsersComponent
+            userMessage={userMessage}
+            officialUser={officialUser}
+          />
         </div>
       </div>
     </>

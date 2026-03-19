@@ -21,19 +21,17 @@ export const connect_webSockets = (server) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
-
     // message texte
     socket.on("send_message", (data) => {
       messages.push(data);
-
+      console.log(data);
       io.emit("receive_message", data);
     });
-
     
     // image
     socket.on("send_image", (data) => {
       messages.push(data);
-
+      console.log(data);
       io.emit("receive_image", data);
     });
 
@@ -43,4 +41,3 @@ export const connect_webSockets = (server) => {
     return io;
   });
 };
-
