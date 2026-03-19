@@ -2,10 +2,10 @@ name: CI/CD CHAT APPLICATION MERN STACK
 #general.yaml
 on:
   push:
-    paths: [ backend/** , frontend/** ]
+    paths: [ 'backend/**' , 'frontend/**' , '.github/workflows/**']
     branches: [ main , master ]
   pull_request: 
-    paths: [ backend/** , frontend/** ]
+    paths: [ 'backend/**' , 'frontend/**' ]
     branches: [ main , master]
 
 
