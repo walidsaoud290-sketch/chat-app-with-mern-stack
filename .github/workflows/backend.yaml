@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - "backend/**"
-    branches: ["main,dev"]
+    branches: [main, dev]
   pull_request:
     paths:
       - "backend/**"
-    branches: ["main,dev"]
+    branches: [main, dev]
 
 jobs:
   test-backend:
@@ -44,7 +44,7 @@ jobs:
           REFRESH_SECRET: 4b3805bb252079fca5cb26d82bdbd2acb3db18b8088238d2d7b1d8951bd36b26b3960a66299e19c674cf5324fc0870160919d3c8514ef8888d739baf7579a818
           NODE_ENV: development #if you are still development or production
           REDIS_URI: redis://localhost:6379
-        
+
       - name: Installer dependencies
         run: npm install
 

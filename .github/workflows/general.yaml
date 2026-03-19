@@ -2,8 +2,7 @@ name: CI/CD CHAT APPLICATION MERN STACK
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, master]
 
 jobs:
   test-backend:
@@ -15,15 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-    
+
         with:
-          node-version: '20'
+          node-version: "20"
       - run: npm install
       - run: npm test
   test-frontend:
     runs-on: ubuntu-latest
     name: Testing frontend
-    
+
     defaults:
       run:
         working-directory: ./frontend
@@ -31,13 +30,13 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm install
       - run: npm test
   deploy:
     runs-on: ubuntu-latest
     name: deploy all
-    needs: [test-backend,test-frontend] # Attendre un job avant de demarrer
+    needs: [test-backend, test-frontend] # Attendre un job avant de demarrer
     steps:
       - uses: actions/checkout@v3
       - name: DEPLOY BACKEND AND FRONTEND
