@@ -1,16 +1,16 @@
-name: CI/CD FRONTEND MERN STACK CHAT APPLICATION
 
-on:
+name: qsdbhsdvch
+on: 
   push:
     paths:
-      - "frontend/**"
-    branches: [ main , master]
+      - ./backend/**
+    branches: [main ,master]
   pull_request:
     paths:
-      - "frontend/**"
-    branches: [ main , master ]
-
+      - ./backend/**
+    branches: [main , master]
 jobs:
+  
   frontend-chat:
     runs-on: ubuntu-latest
     defaults:
