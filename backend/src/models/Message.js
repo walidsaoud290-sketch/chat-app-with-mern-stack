@@ -3,20 +3,20 @@ import mongoose from "mongoose";
 const MessageShema = new mongoose.Schema({
   conversation_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:'Conversation'
+    ref: "Conversation",
   },
-  senderId:{
+  senderId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:'User'
+    ref: "User",
   },
   message: {
     type: String,
   },
   dateTime: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
 });
 
-const Message = new mongoose.model("Message", MessageShema);
+const Message = mongoose.model("Message", MessageShema);
 export default Message;

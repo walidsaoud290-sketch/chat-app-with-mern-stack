@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const conversationShema = mongoose.Schema({
+const conversationShema = new mongoose.Schema({
   first_user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -22,6 +22,6 @@ const conversationShema = mongoose.Schema({
   },
 });
 
-const Conversation =new mongoose.model("Conversation",conversationShema);
+const Conversation = mongoose.model("Conversation", conversationShema);
 
 export default Conversation;
