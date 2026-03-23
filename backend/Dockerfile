@@ -1,3 +1,4 @@
+# dockerfile pour le backend node js 
 FROM node:20-alpine
 
 WORKDIR /app

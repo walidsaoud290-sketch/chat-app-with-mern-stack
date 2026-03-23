@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { context } from "../../App";
 import { usePostMethod } from "../../fetching_to_backend/to_backend";
+import { useEffect } from "react";
 
 const SignUp = () => {
   const username = useRef();
@@ -42,6 +43,10 @@ const SignUp = () => {
       console.log("Error Sign up :" + error);
     }
   };
+
+  useEffect(() => {
+    setErrors({});
+  }, []);
 
   return (
     <>

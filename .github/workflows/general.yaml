@@ -2,20 +2,19 @@ name: CI/CD CHAT APPLICATION MERN STACK
 #general.yaml
 on:
   push:
-    paths: [ 'backend/**' , 'frontend/**' , '.github/workflows/**']
-    branches: [ main , master ]
-  pull_request: 
-    paths: [ 'backend/**' , 'frontend/**' ]
-    branches: [ main , master]
+    paths: ["backend/**", "frontend/**", ".github/workflows/**"]
+    branches: [main, master]
+  pull_request:
+    paths: ["backend/**", "frontend/**"]
+    branches: [main, master]
 
-
-jobs:
+jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
   test-backend:
     name: test-backend
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./backend # tu dit à github actions : toutes les commandes run doivent s'executer dans le dossier ./backend
     services:
       mongodb:
         image: mongo
@@ -26,13 +25,15 @@ jobs:
         ports:
           - 6379:6379
     steps:
-      - name: CHECKOUT THE CODE 
+      # github telecharge ton repo dans une VM
+      # ==> sans ça aucun fichier disponible
+      - name: CHECKOUT THE CODE
         uses: actions/checkout@v4
 
       - name: INSTALLER NODE-JS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
         env:
           PORT: 5000
@@ -41,7 +42,7 @@ jobs:
           REFRESH_SECRET: 4b3805bb252079fca5cb26d82bdbd2acb3db18b8088238d2d7b1d8951bd36b26b3960a66299e19c674cf5324fc0870160919d3c8514ef8888d739baf7579a818
           NODE_ENV: development #if you are still development or production
           REDIS_URI: redis://localhost:6379
-      
+
       - name: INSTALLER DEPENDENCIES
         run: npm install
 
@@ -54,19 +55,19 @@ jobs:
   deploy-backend:
     name: deploy-backend
     runs-on: ubuntu-latest
-    needs: test-backend
+    needs: test-backend # deploy-backend demarre seulement si test-backend reussit
     steps:
       - uses: actions/checkout@v4
       - name: BUILD IMAGE DOCKER
         run: |
           cd backend
           docker build -t backend-chat .
-        
+
       - name: DEPLOY BACKEND
         run: echo "deploy backend"
       - name: VERIFY DOCKER IMAGE IN BACKEND
         run: docker images
-  
+
   test-frontend:
     name: test-frontend
     runs-on: ubuntu-latest
@@ -74,17 +75,17 @@ jobs:
       run:
         working-directory: ./frontend
     steps:
-      - name: CHECKOUT THE CODE 
+      - name: CHECKOUT THE CODE
         uses: actions/checkout@v4
 
       - name: INSTALLER NODE-JS
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
         env:
           VITE_BACKEND_URL: http://localhost:5000/api
           VITE_SECRET_CRYPTAGE: mySecretKeyForCryptage
-        
+
       - name: INSTALLER DEPENDENCIES
         run: npm install
 
@@ -105,8 +106,6 @@ jobs:
           docker build -t frontend-chat .
       - name: DEPLOY FRONTEND
         run: echo "deploy frontend"
-        
+
       - name: VERIFY IMAGES DOCKER IN FRONTEND
         run: docker images
-    
-        

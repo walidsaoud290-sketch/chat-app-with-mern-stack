@@ -21,6 +21,8 @@ export const connect_webSockets = (server) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
+
+
     // message texte
     socket.on("send_message", (data) => {
       messages.push(data);
@@ -28,6 +30,8 @@ export const connect_webSockets = (server) => {
       io.emit("receive_message", data);
     });
     
+
+
     // image
     socket.on("send_image", (data) => {
       messages.push(data);
@@ -35,9 +39,14 @@ export const connect_webSockets = (server) => {
       io.emit("receive_image", data);
     });
 
+
+
+    // disconnection
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
     });
+
+
     return io;
   });
 };
