@@ -49,9 +49,9 @@ const Chat = ({ userMessage, officialUser }) => {
           timestamp: new Date().toISOString(),
           received: false,
           send_by: officialUser._id,
-          send_by_name:officialUser.username,
+          send_by_name: officialUser.username,
           send_to: userMessage._id,
-          send_to_by_name:userMessage.username
+          send_to_by_name: userMessage.username,
         };
 
         socket.emit("send_image", imageData);
@@ -163,7 +163,9 @@ const Chat = ({ userMessage, officialUser }) => {
                 </div>
               </>
             )}
-            <span className="message-content">{message.content}</span>
+            <span className="message-content text text-center">
+              {message.content}
+            </span>
             <div className="message-info">
               <span className="sender">
                 {message.sender === socket.id ? "me" : "other"}{" "}
