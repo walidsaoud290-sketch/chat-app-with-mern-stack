@@ -73,7 +73,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
       - name: BUILD IMAGE DOCKER
         run: |
           cd backend
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend_chat:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-chat:latest .
 
       - name: DEPLOY BACKEND
         run: echo "deploy backend"
@@ -115,7 +115,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
       - name: BUILD IMAGE DOCKER IN FRONTEND PART
         run: |
           cd frontend
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend_chat:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend-chat:latest .
       - name: DEPLOY FRONTEND
         run: echo "deploy frontend"
 
@@ -127,7 +127,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
       - deploy-backend
     steps:
       - name: PUSH BACKEND TO DOCKER HUB
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/backend_chat:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/backend-chat:latest
 
       - name: PUSH FRONTEND TO DOCKER HUB
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/frontend_chat:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/frontend-chat:latest
