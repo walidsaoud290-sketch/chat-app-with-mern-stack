@@ -73,7 +73,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
 
       - name: PUSH DOCKER IMAGE
         run: |
-          cd backedn
+          cd backend
           docker push ${{ secrets.DOCKER_USERNAME }}/backend-chat:latest
 
       - name: DEPLOY BACKEND
