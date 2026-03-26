@@ -37,11 +37,11 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
 
         env:
           PORT: 5000
-          MONGO_URI: mongodb://localhost:27017/db_chat
-          JWT_SECRET: fab5b1b57daff5bff75640ebb61576312be28a52ff30e35573a40a8b75e94e90bee41e9939c25f23157d0e876c3976506a137348776268132cacbc9c1556eda1
-          REFRESH_SECRET: 4b3805bb252079fca5cb26d82bdbd2acb3db18b8088238d2d7b1d8951bd36b26b3960a66299e19c674cf5324fc0870160919d3c8514ef8888d739baf7579a818
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          REFRESH_SECRET: ${{ secrets.REFRESH_SECRET }}
           NODE_ENV: development #if you are still development or production
-          REDIS_URI: redis://localhost:6379
+          REDIS_URI: ${{ secrets.REDIS_URI }}
 
       - name: INSTALLER DEPENDENCIES
         run: npm install
@@ -94,8 +94,8 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
         with:
           node-version: "20"
         env:
-          VITE_BACKEND_URL: http://localhost:5000/api
-          VITE_SECRET_CRYPTAGE: mySecretKeyForCryptage
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+          VITE_SECRET_CRYPTAGE: ${{ secrets.VITE_SECRET_CRYPTAGE }}
 
       - name: INSTALLER DEPENDENCIES
         run: npm install
