@@ -1,6 +1,5 @@
-import React from "react";
 import "./UsersComponent.css";
-const UsersComponent = ({ userMessage }) => {
+const UsersComponent = ({ userMessage, users }) => {
   return (
     <>
       <div className="user">

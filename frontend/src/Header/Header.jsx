@@ -41,13 +41,13 @@ const Header = () => {
         </div>
         <ul className="menu">
           <li>
-            <a>Homepage</a>
+            <Link to="/chat/contact">Homepage</Link>
           </li>
           <li>
-            <a>Portfolio</a>
+            <Link>Portfolio</Link>
           </li>
           <li>
-            <a>About</a>
+            <Link>About</Link>
           </li>
         </ul>
 
