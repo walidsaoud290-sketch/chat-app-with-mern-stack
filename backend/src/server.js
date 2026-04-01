@@ -8,7 +8,7 @@ import { connectToMongo } from "./config/db.js";
 import { connect_webSockets } from "./socket/socket.js";
 import dataRoutes from "./routes/data.route.js";
 import { connectToKafka } from "./config/kafka.js";
-
+import dataMessages from "./routes/messages.route.js";
 dotenv.config();
 
 const app = express();
@@ -24,6 +24,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/data", dataRoutes);
+app.use("/api/messages", dataMessages);
 
 const server = http.createServer(app);
 
@@ -33,6 +34,5 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, async () => {
   connectToMongo();
-  connectToKafka();
   console.log("Server running on port", PORT);
 });

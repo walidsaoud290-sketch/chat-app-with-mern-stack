@@ -1,8 +1,7 @@
 import { Server } from "socket.io";
 import cors from "cors";
 import express from "express";
-import { Kafka } from "kafkajs";
-import { InsertionData } from "../utils/insertion.js";
+import { insert_messages } from "../functions/messages/insertMessages.js";
 
 // npm i socket.io (webSocket)
 const app = express();
@@ -10,12 +9,6 @@ app.use(cors());
 app.use(express.json());
 
 let messages = [];
-const kafka = new Kafka({
-  clientId: "send_message",
-  brokers: ["localhost:9092"],
-});
-
-const producer = kafka.producer();
 
 export const connect_webSockets = (server) => {
   // creation un serveur webSocket
@@ -29,19 +22,24 @@ export const connect_webSockets = (server) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
 
-    // message texte
     socket.on("send_message", (data) => {
       messages.push(data);
+      const messageDB = {
+        senderId: data.send_by,
+        receiverId: data.send_to,
+        message: data.content,
+        dateTime: new Date(),
+      };
       console.log(data);
-      InsertionData(data);
-      io.emit("receive_message", data);
+      insert_messages(data.send_by, data.send_to, data.content);
+
+      io.emit("receive_message", messageDB);
     });
 
-    // image
     socket.on("send_image", (data) => {
       messages.push(data);
-      InsertionData(data);
       console.log(data);
+      insert_messages(data.send_by, data.send_to, data.content);
       io.emit("receive_image", data);
     });
 

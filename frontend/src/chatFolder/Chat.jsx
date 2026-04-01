@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./Chat.css";
 import { io } from "socket.io-client";
 import { days } from "../days";
+import { useGetMethod, usePostMethod } from "../fetching_to_backend/to_backend";
 
 const Chat = ({ userMessage, officialUser }) => {
   const [socket, setSocket] = useState(null);
@@ -56,7 +57,6 @@ const Chat = ({ userMessage, officialUser }) => {
 
         socket.emit("send_image", imageData);
       };
-      console.log(messages);
       reader.readAsDataURL(file);
     }
   };
@@ -69,6 +69,29 @@ const Chat = ({ userMessage, officialUser }) => {
       newSocket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    const getMessages = async () => {
+      if (!userMessage) return;
+      try {
+        const apiMessages = await usePostMethod("/messages/getMessages", {
+          userMessage,
+        });
+        const status = apiMessages.status;
+        if (status === 200) {
+          console.log(apiMessages);
+          const dataMessages = apiMessages.data;
+          setMessages(apiMessages.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          console.log("Error response :" + error.response.data);
+        }
+        console.log("Error getting the data messages :" + error);
+      }
+    };
+    getMessages();
+  }, [userMessage]);
 
   useEffect(() => {
     if (!socket) return;
@@ -85,18 +108,19 @@ const Chat = ({ userMessage, officialUser }) => {
       socket.off("receive_message");
       socket.off("receive_image");
     };
-  }, [socket]);
+  }, [socket, messages]);
 
-  // Fonction pour rendre un message selon son type
   const renderMessage = (message, idx) => {
     return (
       <li
         key={idx}
-        className={message.sender === socket.id ? "text-end" : "text-start"}
+        className={
+          message.senderId !== officialUser._id ? "text-start" : "text-end"
+        }
       >
         {message.type === "image" ? (
           <div className="image-message">
-            {message.sender === socket.id ? (
+            {message.senderId === officialUser._id ? (
               <>
                 <div className="chat-image avatar">
                   <div className="w-10 rounded-full">
@@ -121,7 +145,7 @@ const Chat = ({ userMessage, officialUser }) => {
             )}
 
             <img
-              src={message.content}
+              src={message.message}
               alt="Chat content"
               style={{
                 maxWidth: "250px",
@@ -132,7 +156,6 @@ const Chat = ({ userMessage, officialUser }) => {
               onClick={() => window.open(message.content, "_blank")}
             />
             <div className="message-info">
-              <span className="sender">{message.sender}</span>
               <span className="timestamp">
                 {new Date(message.timestamp).toLocaleTimeString()}
               </span>
@@ -140,7 +163,7 @@ const Chat = ({ userMessage, officialUser }) => {
           </div>
         ) : (
           <div className="text-message">
-            {message.sender === socket.id ? (
+            {message.senderId === officialUser._id ? (
               <>
                 <div className="chat-image avatar">
                   <div className="w-10 rounded-full">
@@ -163,16 +186,16 @@ const Chat = ({ userMessage, officialUser }) => {
                 </div>
               </>
             )}
-            <span className="message-content text text-center">
-              {message.content}
+            <span className={`message-content text text-center`}>
+              {message.message}
             </span>
             <div className="message-info">
               <span className="sender">
-                {message.sender === socket.id ? "me" : "other"}{" "}
+                {message.senderId === officialUser._id ? "me" : "other"}{" "}
               </span>
               <br />
               <span className="timestamp">
-                {new Date(message.timestamp).toLocaleTimeString()}
+                {new Date(message.dateTime).toLocaleTimeString()}
               </span>
             </div>
           </div>

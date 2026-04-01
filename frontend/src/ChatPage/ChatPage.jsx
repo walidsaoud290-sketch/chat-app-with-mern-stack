@@ -11,20 +11,22 @@ import { contextUser } from "../Main/MainChat";
 const ChatPage = () => {
   const { officialUser } = useContext(contextUser);
   const [users, setUsers] = useState([]);
-  const [userMessage, setUserMessage] = useState({});
+  const [userMessage, setUserMessage] = useState({} || users[0]);
 
   const getUsers = async () => {
     try {
       const api = await useGetMethod("/data/users_amies");
-      console.log(api);
+      if (api.status !== 200) {
+        console.log("Error returning amies :");
+        return;
+      }
       const data = api.data.users;
       const usersData = api.data.users.filter(
         (e) => e._id !== officialUser._id,
       );
-      console.log(officialUser);
-      console.log(usersData);
       if (data && data.length > 0) {
         setUsers(usersData);
+        setUserMessage(usersData[0]);
       }
     } catch (error) {
       if (error.response) {
@@ -36,7 +38,6 @@ const ChatPage = () => {
 
   useEffect(() => {
     getUsers();
-    console.log(users);
   }, []);
   return (
     <>

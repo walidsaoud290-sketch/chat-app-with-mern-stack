@@ -10,7 +10,6 @@ const generateToken = (id, res) => {
     httpOnly: true, // prevent XSS attacks : cross-site scripting,
     sameSite: "strict",
     secure: process.env.NODE_ENV === "development" ? false : true,
-    
   });
   return token;
 };
