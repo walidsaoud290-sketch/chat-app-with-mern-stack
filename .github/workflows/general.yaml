@@ -2,10 +2,11 @@ name: CI/CD CHAT APPLICATION MERN STACK
 #general.yaml
 on:
   push:
-    paths: ["backend/**", "frontend/**", ".github/workflows/**"]
+    paths:
+      ["backend/**", "frontend/**", "services/email/**", ".github/workflows/**"]
     branches: [main, master]
   pull_request:
-    paths: ["backend/**", "frontend/**"]
+    paths: ["backend/**", "frontend/**", "services/email/**"]
     branches: [main, master]
 
 jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
@@ -148,7 +149,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
         env:
           PORT_EMAIL_SERVICE: ${{ secrets.PORT_EMAIL_SERVICE }}
           MY_EMAIL: ${{ secrets.MY_EMAIL }}
-          
+
       - name: INSTALLE DEPENDENCIES
         run: npm install
 
