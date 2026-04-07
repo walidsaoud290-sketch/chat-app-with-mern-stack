@@ -137,7 +137,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
     name: test-email-services
     defaults:
       run:
-        working-directory: ./services/test-email-services
+        working-directory: ./services/email
     steps:
       - name: CHECKOUT THE CODE
         uses: actions/checkout@v4
