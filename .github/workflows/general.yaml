@@ -179,7 +179,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
       - name: PUSH TO DOCKER HUB
         run: |
           cd services/email
-          docker push ${{ secrets.DOCKER_USERNAME }}/}/email_service_chat:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/email_service_chat:latest
 
       - name: DEPLOY EMAIL SERVICE
         run: echo "deploy email service"
