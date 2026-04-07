@@ -156,7 +156,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
       - name: RUN TESTS
         run: npm  test
 
-      - name: BUILD EMAIL SERVICE
+      - name: BUILD EMAIL SERVICE 
         run: npm run build
 
   deploy-test-email-services:
