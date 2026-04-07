@@ -46,6 +46,7 @@ function App() {
 
   return (
     <>
+    <h1 className="text-white">Welcome to chat App</h1>
        <context.Provider value={{ errors, setErrors,setIsAuth }}>
       <BrowserRouter>
         <Routes>

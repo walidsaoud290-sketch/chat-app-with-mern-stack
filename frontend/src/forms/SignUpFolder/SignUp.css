@@ -1,11 +1,87 @@
 .signUp {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: row-reverse;
   align-items: center;
+  justify-content: center;
+  gap: 60px;
+  padding: 40px 24px;
+}
+.field {
   position: relative;
-  z-index: 1;
-  color: white;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  height: 50px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.field .input {
+  width: 100%;
+  height: 100%;
+  padding: 0 16px 0 50px;
+  background: #dde1e7;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  font-size: 15px;
+  color: #595959;
+  box-shadow:
+    inset 2px 2px 5px #babecc,
+    inset -5px -5px 10px rgba(255, 255, 255, 0.45);
+  transition: box-shadow 0.2s ease;
+}
+.content{
+  width: 100%;
+  max-width: 380px;
+}
+.field .input:focus {
+  box-shadow:
+    inset 1px 1px 3px #babecc,
+    inset -1px -1px 3px rgba(255, 255, 255, 0.45);
+}
+
+.field .input::placeholder {
+  color: #999;
+  font-size: 14px;
+}
+
+.field .span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .signUp {
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px 16px;
+  }
+
+  .LogIn {
+    max-width: 80%;
+  }
+
+  .content {
+    padding: 32px 24px;
+  }
+  .field {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .content {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+
+  .content .text {
+    font-size: 24px;
+  }
 }

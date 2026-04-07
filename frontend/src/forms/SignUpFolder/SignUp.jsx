@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { context } from "../../App";
 import { usePostMethod } from "../../fetching_to_backend/to_backend";
 import { useEffect } from "react";
+import Welcome from "../../welcomePage/Welcome";
+import gsap from "gsap";
 
 const SignUp = () => {
   const username = useRef();
@@ -46,11 +48,19 @@ const SignUp = () => {
 
   useEffect(() => {
     setErrors({});
+    gsap.fromTo(".text",{
+      opacity:0,
+      translateX:100
+    },{
+      opacity:1,
+      translateX:0
+    })
   }, []);
 
   return (
     <>
       <div className="signUp">
+        <Welcome />
         <div className="content">
           <div className="text">Sign up</div>
 
@@ -86,8 +96,6 @@ const SignUp = () => {
                   </g>
                 </svg>
               </span>
-
-              <label className="label">Username</label>
             </div>
             {errors?.username && (
               <p className="text-danger"> {errors.username} </p>
@@ -123,12 +131,8 @@ const SignUp = () => {
                   </g>
                 </svg>
               </span>
-
-              <label className="label">Email</label>
             </div>
             {errors?.email && <p className="text-danger"> {errors.email} </p>}
-            <br />
-
             <div className="field">
               <input
                 ref={password}
@@ -161,8 +165,6 @@ const SignUp = () => {
                   </g>
                 </svg>
               </span>
-
-              <label className="label">Password</label>
             </div>
             {errors?.password && (
               <p className="text-danger"> {errors.password} </p>

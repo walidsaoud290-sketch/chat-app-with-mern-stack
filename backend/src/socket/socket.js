@@ -30,7 +30,6 @@ export const connect_webSockets = (server) => {
         message: data.content,
         dateTime: new Date(),
       };
-      console.log(data);
       insert_messages(data.send_by, data.send_to, data.content);
 
       io.emit("receive_message", messageDB);
@@ -38,7 +37,6 @@ export const connect_webSockets = (server) => {
 
     socket.on("send_image", (data) => {
       messages.push(data);
-      console.log(data);
       insert_messages(data.send_by, data.send_to, data.content);
       io.emit("receive_image", data);
     });

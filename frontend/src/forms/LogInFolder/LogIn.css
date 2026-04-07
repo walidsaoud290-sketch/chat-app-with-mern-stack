@@ -1,135 +1,179 @@
-/* From Uiverse.io by Harsha2lucky */
-.LogIn {
+.login-container {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: row-reverse;
   align-items: center;
-  position: relative;
-  z-index: 1;
-  color: white;
-
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  justify-content: center;
+  gap: 60px;
+  padding: 40px 24px;
 }
+
+.LogIn {
+  width: 100%;
+  max-width: 380px;
+}
+
 .content {
-  width: 330px;
-  padding: 40px 30px;
   background: #dde1e7;
-  border-radius: 10px;
+  border-radius: 20px;
+  padding: 40px 36px;
   box-shadow:
-    -3px -3px 7px #ffffff73,
-    2px 2px 5px rgba(94, 104, 121, 0.288);
+    -3px -3px 7px rgba(255, 255, 255, 0.45),
+    3px 3px 8px rgba(94, 104, 121, 0.3);
 }
 
 .content .text {
-  font-size: 33px;
-  font-weight: 600;
-  margin-bottom: 35px;
+  font-size: 30px;
+  font-weight: 700;
   color: #595959;
+  margin-bottom: 28px;
 }
 
+/* ── Champs ── */
 .field {
+  position: relative;
   height: 50px;
   width: 100%;
-  display: flex;
-  position: relative;
-}
-
-.field:nth-child(2) {
-  margin-top: 20px;
+  margin-bottom: 16px;
 }
 
 .field .input {
-  height: 100%;
   width: 100%;
-  padding-left: 45px;
-  outline: none;
-  border: none;
-  font-size: 18px;
+  height: 100%;
+  padding: 0 16px 0 50px;
   background: #dde1e7;
-  color: #595959;
+  border: none;
+  outline: none;
   border-radius: 25px;
+  font-size: 15px;
+  color: #595959;
   box-shadow:
     inset 2px 2px 5px #babecc,
-    inset -5px -5px 10px #ffffff73;
+    inset -5px -5px 10px rgba(255, 255, 255, 0.45);
+  transition: box-shadow 0.2s ease;
 }
 
 .field .input:focus {
   box-shadow:
-    inset 1px 1px 2px #babecc,
-    inset -1px -1px 2px #ffffff73;
+    inset 1px 1px 3px #babecc,
+    inset -1px -1px 3px rgba(255, 255, 255, 0.45);
+}
+
+.field .input::placeholder {
+  color: #999;
+  font-size: 14px;
 }
 
 .field .span {
   position: absolute;
-  color: #595959;
+  left: 0;
+  top: 0;
   width: 50px;
-  line-height: 55px;
-}
-
-.field .label {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 45px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
-  color: #666666;
 }
 
-.field .input:valid ~ label {
-  opacity: 0;
+.text-danger {
+  font-size: 13px;
+  color: #e74c3c;
+  margin: -8px 0 10px 10px;
 }
 
 .forgot-pass {
-  text-align: left;
-  margin: 10px 0 10px 5px;
+  text-align: right;
+  margin-bottom: 16px;
 }
 
 .forgot-pass a {
-  font-size: 16px;
-  color: #666666;
+  font-size: 14px;
+  color: #3498db;
   text-decoration: none;
+  transition: text-decoration 0.2s;
 }
 
-.forgot-pass:hover a {
+.forgot-pass a:hover {
   text-decoration: underline;
 }
 
+/* ── Bouton ── */
 .button {
-  margin: 15px 0;
   width: 100%;
   height: 50px;
-  font-size: 18px;
-  line-height: 50px;
+  font-size: 16px;
   font-weight: 600;
   background: #dde1e7;
-  border-radius: 25px;
   border: none;
-  outline: none;
-  cursor: pointer;
+  border-radius: 25px;
   color: #595959;
+  cursor: pointer;
   box-shadow:
     2px 2px 5px #babecc,
-    -5px -5px 10px #ffffff73;
+    -5px -5px 10px rgba(255, 255, 255, 0.45);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
 }
 
-.button:focus {
+.button:hover {
+  box-shadow:
+    1px 1px 3px #babecc,
+    -2px -2px 6px rgba(255, 255, 255, 0.45);
+}
+
+.button:active {
+  transform: scale(0.98);
   box-shadow:
     inset 2px 2px 5px #babecc,
-    inset -5px -5px 10px #ffffff73;
+    inset -5px -5px 10px rgba(255, 255, 255, 0.45);
 }
 
 .sign-up {
-  margin: 10px 0;
+  margin-top: 18px;
+  text-align: center;
+  font-size: 14px;
   color: #595959;
-  font-size: 16px;
 }
 
 .sign-up a {
   color: #3498db;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .sign-up a:hover {
   text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px 16px;
+  }
+
+  .LogIn {
+    max-width: 80%;
+  }
+
+  .content {
+    padding: 32px 24px;
+  }
+  .field {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .content {
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+
+  .content .text {
+    font-size: 24px;
+  }
 }

@@ -1,0 +1,34 @@
+.welcome-section {
+  padding: 60px;
+  position: relative;
+  color: black;
+  background: none;
+}
+
+.content h1 {
+  font-size: 48px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  color: black;
+}
+
+.content ul {
+  list-style: none;
+
+  padding: 0;
+}
+
+.content li {
+  font-size: 20px;
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 25px;
+}
+
+.content li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #3ad1ff;
+  font-size: 24px;
+}

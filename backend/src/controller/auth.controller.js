@@ -1,8 +1,8 @@
-import express from "express";
 import bcrypt from "bcryptjs";
 import { generateRefreshToken, generateToken } from "../utils/generateToken.js";
 import User from "../models/User.js";
 import { redisClient } from "../config/redis.js";
+import { producer } from "../config/kafka.js";
 
 const validationEmail = (email) => {
   const isCorrecte = email.split("@");
@@ -54,7 +54,17 @@ export const LogIn = async (req, res) => {
         error_message: "Invalid Password",
       });
     }
-
+    await producer.send({
+      topic: "email-successful",
+      messages: [
+        {
+          value: JSON.stringify({
+            email: user.email,
+            username: user.username,
+          }),
+        },
+      ],
+    });
     const token = generateToken(user._id, res);
     const refresh_token = generateRefreshToken(user._id, res);
 
@@ -106,7 +116,7 @@ export const signUp = async (req, res) => {
         error_message: "Email already exist",
       });
     }
-    
+
     const salt = await bcrypt.genSalt(10);
     const Hash_password = await bcrypt.hash(password, salt);
     const newUser = new User({
