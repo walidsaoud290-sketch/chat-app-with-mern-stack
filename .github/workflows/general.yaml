@@ -2,8 +2,7 @@ name: CI/CD CHAT APPLICATION MERN STACK
 #general.yaml
 on:
   push:
-    paths:
-      ["backend/**", "frontend/**", "services/email/**", ".github/workflows/**"]
+    paths: ["backend/**", "frontend/**", "services/**", ".github/workflows/**"]
     branches: [main, master]
   pull_request:
     paths: ["backend/**", "frontend/**", "services/email/**"]
@@ -156,7 +155,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
       - name: RUN TESTS
         run: npm  test
 
-      - name: BUILD EMAIL SERVICE 
+      - name: BUILD EMAIL SERVICE
         run: npm run build
 
   deploy-test-email-services:
