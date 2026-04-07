@@ -24,7 +24,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
         image: redis
         ports:
           - 6379:6379
-        
+
     steps:
       # github telecharge ton repo dans une VM
       # ==> sans ça aucun fichier disponible
@@ -131,3 +131,55 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
 
       - name: DEPLOY FRONTEND
         run: echo "deploy frontend"
+  test-email-services:
+    runs-on: ubuntu-latest
+    name: test-email-services
+    defaults:
+      run:
+        working-directory: ./services/test-email-services
+    steps:
+      - name: CHECKOUT THE CODE
+        uses: actions/checkout@v4
+
+      - name: INSTALLER NODE-JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+        env:
+          PORT_EMAIL_SERVICE: ${{ secrets.PORT_EMAIL_SERVICE }}
+          MY_EMAIL: ${{ secrets.MY_EMAIL }}
+          
+      - name: INSTALLE DEPENDENCIES
+        run: npm install
+
+      - name: RUN TESTS
+        run: npm  test
+
+      - name: BUILD EMAIL SERVICE
+        run: npm run build
+
+  deploy-test-email-services:
+    name: deploy email service
+    runs-on: ubuntu-latest
+    needs:
+      - test-email-services
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: DOCKER LOGIN
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: BUILD DOCKER IMAGE
+        run: |
+          cd services/email
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/email_service_chat:latest .
+      - name: PUSH TO DOCKER HUB
+        run: |
+          cd services/email
+          docker push ${{ secrets.DOCKER_USERNAME }}/}/email_service_chat:latest
+
+      - name: DEPLOY EMAIL SERVICE
+        run: echo "deploy email service"
