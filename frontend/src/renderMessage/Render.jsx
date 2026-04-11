@@ -1,97 +1,71 @@
 import "./Render.css";
-const Render = ({ message, idx, officialUser }) => {
-  return (
-    <>
-      <li
-        key={idx}
-        className={
-          message.senderId !== officialUser._id ? "text-start" : "text-end"
-        }
-      >
-        {message.type === "image" ? (
-          <div className="image-message">
-            {message.senderId === officialUser._id ? (
-              <>
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
-                    />
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
-                    />
-                  </div>
-                </div>
-              </>
-            )}
 
+const Render = ({ message, idx, officialUser }) => {
+  const isOwnMessage = message.senderId === officialUser._id;
+  
+  return (
+    <li key={idx} className={`message-item ${isOwnMessage ? "message-own" : "message-other"}`}>
+      {message.type === "image" ? (
+        <div className={`chat ${isOwnMessage ? "chat-end" : "chat-start"}`}>
+          <div className="chat-image avatar">
+            <div className="avatar-circle">
+              <img
+                alt="Profile avatar"
+                src={
+                  isOwnMessage
+                    ? "https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
+                    : "https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                }
+              />
+            </div>
+          </div>
+          <div className="chat-header">
+            {isOwnMessage ? "You" : "Other User"}
+            <time className="chat-time">
+              {new Date(message.timestamp).toLocaleTimeString()}
+            </time>
+          </div>
+          <div className={`chat-bubble ${isOwnMessage ? "chat-bubble-own" : "chat-bubble-other"}`}>
             <img
-              src={message.message}
+              src={message.content}
               alt="Chat content"
-              style={{
-                maxWidth: "250px",
-                maxHeight: "200px",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
+              className="chat-image-message"
               onClick={() => window.open(message.content, "_blank")}
             />
-            <div className="message-info">
-              <span className="timestamp">
-                {new Date(message.timestamp).toLocaleTimeString()}
-              </span>
+          </div>
+          <div className="chat-footer">
+            {isOwnMessage ? "Delivered" : "Received"}
+          </div>
+        </div>
+      ) : (
+        <div className={`chat ${isOwnMessage ? "chat-end" : "chat-start"}`}>
+          <div className="chat-image avatar">
+            <div className="avatar-circle">
+              <img
+                alt="Profile avatar"
+                src={
+                  isOwnMessage
+                    ? "https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
+                    : "https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                }
+              />
             </div>
           </div>
-        ) : (
-          <div className="text-message">
-            {message.senderId === officialUser._id ? (
-              <>
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
-                    />
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="Tailwind CSS chat bubble component"
-                      src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-            <span className={`message-content text text-center`}>
-              {message.message}
-            </span>
-            <div className="message-info">
-              <span className="sender">
-                {message.senderId === officialUser._id ? "" : "other"}{" "}
-              </span>
-              <br />
-              <span className="timestamp">
-                {new Date(message.dateTime).toLocaleTimeString()}
-              </span>
-            </div>
+          <div className="chat-header">
+            {isOwnMessage ? "You" : "Other User"}
+            <time className="chat-time">
+              {new Date(message.dateTime).toLocaleTimeString()}
+            </time>
           </div>
-        )}
-      </li>
-    </>
+          <div className={`chat-bubble ${isOwnMessage ? "chat-bubble-own" : "chat-bubble-other"}`}>
+            {message.message}
+          </div>
+          <div className="chat-footer">
+            {isOwnMessage ? "Delivered" : "Received"}
+          </div>
+        </div>
+      )}
+    </li>
   );
 };
 

@@ -7,7 +7,14 @@ import authRoutes from "./routes/auth.route.js";
 import { connectToMongo } from "./config/db.js";
 import { connect_webSockets } from "./socket/socket.js";
 import dataRoutes from "./routes/data.route.js";
-import { ConnectProducer, connectToKafka,creatTopicMessages, listTopics} from "./config/kafka.js";
+
+import {
+  ConnectProducer,
+  connectToKafka,
+  creatTopicMessages,
+  deleteTopic,
+  listTopics,
+} from "./config/kafka.js";
 import dataMessages from "./routes/messages.route.js";
 dotenv.config();
 
@@ -29,13 +36,12 @@ app.use("/api/messages", dataMessages);
 
 const server = http.createServer(app);
 
-connect_webSockets(server);
-
 const PORT = process.env.PORT || 5000;
+
 await connectToKafka();
 await ConnectProducer();
 server.listen(PORT, async () => {
+  connect_webSockets(server);
   connectToMongo();
-  listTopics();
   console.log("Server running on port", PORT);
 });

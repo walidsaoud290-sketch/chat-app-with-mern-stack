@@ -3,16 +3,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0f172a;
+  perspective: 1000px;
   padding: 40px;
 }
 
 .profile-card {
   width: 420px;
   background: #1e293b;
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 35px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   text-align: center;
   color: white;
 }
@@ -27,6 +28,12 @@
   border-radius: 50%;
   border: 4px solid #3b82f6;
   margin-bottom: 15px;
+}
+
+.profile-avatar:hover {
+  transition: transform 1s ease;
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .profile-header h2 {

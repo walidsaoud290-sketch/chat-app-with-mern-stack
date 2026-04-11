@@ -12,7 +12,8 @@ const ChatPage = () => {
   const { officialUser } = useContext(contextUser);
   const [users, setUsers] = useState([]);
   const [userMessage, setUserMessage] = useState({} || users[0]);
-  const [isNotified,setIsNotified] = useState(false);
+  const [isNotified, setIsNotified] = useState(false);
+
   const getUsers = async () => {
     try {
       const api = await useGetMethod("/data/users_amies");
@@ -50,7 +51,11 @@ const ChatPage = () => {
           )}
         </div>
         <div className="div2">
-          <Chat userMessage={userMessage} officialUser={officialUser} setIsNotified={setIsNotified} />
+          <Chat
+            userMessage={userMessage}
+            officialUser={officialUser}
+            setIsNotified={setIsNotified}
+          />
         </div>
         <div className="div3">
           <UsersComponent

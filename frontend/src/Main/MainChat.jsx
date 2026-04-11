@@ -2,9 +2,10 @@ import Header from "../Header/Header";
 import { Navigate, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
-
+import { Provider } from "react-redux";
 import { useGetMethod } from "../fetching_to_backend/to_backend";
 import { createContext } from "react";
+import { store } from "../chat-redux/store.js";
 export const contextUser = createContext();
 const MainChat = () => {
   const [loading, setIsLoading] = useState(true);
@@ -56,7 +57,8 @@ const MainChat = () => {
         {isAuth ? (
           <>
             <div>
-              <Outlet />
+                <Outlet />
+
             </div>
           </>
         ) : (

@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import "./Chat.css";
 import { io } from "socket.io-client";
 import { days } from "../days";
-import { useGetMethod, usePostMethod } from "../fetching_to_backend/to_backend";
+import { usePostMethod } from "../fetching_to_backend/to_backend";
 import Render from "../renderMessage/Render";
-import {gsap} from "gsap";
 
 const Chat = ({ userMessage, officialUser }) => {
   const [socket, setSocket] = useState(null);
@@ -15,7 +14,6 @@ const Chat = ({ userMessage, officialUser }) => {
   const idx = new Date().getDay();
   const day = days[idx - 1];
 
-  
   useEffect(() => {
     if (chatWindowRef.current) {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
@@ -40,12 +38,15 @@ const Chat = ({ userMessage, officialUser }) => {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    const formData = new FormData();
+
+    formData.append("image", file);
     if (file && socket) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const imageData = {
           type: "image",
-          content: event.target.result,
+          content: reader.result,
           sender: socket.id,
           send_by: officialUser._id,
           send_to: userMessage._id,
@@ -58,8 +59,9 @@ const Chat = ({ userMessage, officialUser }) => {
   };
 
   useEffect(() => {
-    const {VITE_SOCKET_IO} = import.meta;
-    const newSocket = io(VITE_SOCKET_IO);
+    const newSocket = io(import.meta.env.VITE_SOCKET_IO);
+    newSocket.emit("join_room", officialUser._id);
+
     setSocket(newSocket);
 
     return () => {
@@ -77,7 +79,6 @@ const Chat = ({ userMessage, officialUser }) => {
         const status = apiMessages.status;
         if (status === 200) {
           console.log(apiMessages);
-          const dataMessages = apiMessages.data;
           setMessages(apiMessages.data);
         }
       } catch (error) {
@@ -105,7 +106,9 @@ const Chat = ({ userMessage, officialUser }) => {
       socket.off("receive_message");
       socket.off("receive_image");
     };
-  }, [socket, messages]);
+  }, [socket]);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="card">
@@ -117,9 +120,15 @@ const Chat = ({ userMessage, officialUser }) => {
             <p className="text-center">No messages Now</p>
           ) : (
             messages.map((message, idx) => {
-              return <>
-                <Render message={message} idx={idx} officialUser={officialUser}/>
-              </>
+              return (
+                <>
+                  <Render
+                    message={message}
+                    idx={idx}
+                    officialUser={officialUser}
+                  />
+                </>
+              );
             })
           )}
         </ul>

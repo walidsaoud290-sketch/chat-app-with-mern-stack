@@ -6,6 +6,7 @@ import { useGetMethod } from "../fetching_to_backend/to_backend";
 import { useState } from "react";
 import { useContext } from "react";
 import { contextUser } from "../Main/MainChat";
+import { headerAnimations } from "../animations/Header/headerAnimations";
 
 const Header = () => {
   const { officialUser } = useContext(contextUser);

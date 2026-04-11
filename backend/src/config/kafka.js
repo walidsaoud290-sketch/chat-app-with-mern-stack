@@ -42,6 +42,17 @@ export const creatTopic = async () => {
   }
 };
 
+export const deleteTopic = async () => {
+  await kafka
+    .admin()
+    .deleteTopics({
+      topics: ["email-successful"],
+    })
+    .then((e) => console.log("Topic deleted successfuly"))
+    .catch((e) => console.log("Error deleting topic :" + e));
+};
+
+
 export const creatTopicMessages = async () => {
   try {
     await admin.connect();
