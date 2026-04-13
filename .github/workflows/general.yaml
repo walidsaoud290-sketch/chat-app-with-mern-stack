@@ -1,5 +1,4 @@
 name: CI/CD CHAT APPLICATION MERN STACK
-#general.yaml
 on:
   push:
     paths:
@@ -229,7 +228,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
         uses: docker/login-action
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrest.DOCKER_PASSWORD }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: BUILD DOCKER IMAGE
         run: |
