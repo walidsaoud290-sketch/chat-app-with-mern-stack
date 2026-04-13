@@ -14,7 +14,7 @@ on:
     paths: ["backend/**", "frontend/**", "services/email/**"]
     branches: [main, master]
 
-jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
+jobs:
   test-backend:
     name: test-backend
     runs-on: ubuntu-latest
@@ -32,8 +32,6 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
           - 6379:6379
 
     steps:
-      # github telecharge ton repo dans une VM
-      # ==> sans ça aucun fichier disponible
       - name: CHECKOUT THE CODE
         uses: actions/checkout@v4
 
@@ -47,7 +45,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
           MONGO_URI: ${{ secrets.MONGO_URI }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           REFRESH_SECRET: ${{ secrets.REFRESH_SECRET }}
-          NODE_ENV: development #if you are still development or production
+          NODE_ENV: development
           REDIS_URI: ${{ secrets.REDIS_URI }}
 
       - name: INSTALLER DEPENDENCIES
@@ -219,7 +217,8 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
   deploy-test-notification-services:
     name: deploy notification service
     runs-on: ubuntu-latest
-    needs: test-notification-services
+    needs:
+      - test-notification-services
     steps:
       - name: CHECKOUT THE CODE
         uses: actions/checkout@v4
