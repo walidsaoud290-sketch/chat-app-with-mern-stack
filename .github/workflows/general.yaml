@@ -2,14 +2,20 @@ name: CI/CD CHAT APPLICATION MERN STACK
 #general.yaml
 on:
   push:
-    paths: ["backend/**", "frontend/**", "services/**", ".github/workflows/**"]
+    paths:
+      [
+        "backend/**",
+        "frontend/**",
+        "services/email/**",
+        "services/notifications/**",
+        ".github/workflows/**",
+      ]
     branches: [main, master]
   pull_request:
     paths: ["backend/**", "frontend/**", "services/email/**"]
     branches: [main, master]
 
 jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
-
   test-backend:
     name: test-backend
     runs-on: ubuntu-latest
@@ -204,7 +210,7 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
 
       - name: INSTALLER DEPENDENCIES NOTIFICATIONS
         run: npm install
-          
+
       - name: INSTALLE TESTS NOTIFICATIONS
         run: npm test
 
@@ -224,8 +230,8 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrest.DOCKER_PASSWORD }}
-        
-      - name: BUILD DOCKER IMAGE 
+
+      - name: BUILD DOCKER IMAGE
         run: |
           cd ./services/notifications
           docker build -t ${{ secrets.DOCKER_USERNAME }}/notification_service .
@@ -237,7 +243,3 @@ jobs: # === un serveur virtuel github , chaque job tourne dans une VM differente
 
       - name: DEPLOY NOTIFICATIONS SERVICE
         run: echo "deploy notification service successfuly"
-
-      
-
-
