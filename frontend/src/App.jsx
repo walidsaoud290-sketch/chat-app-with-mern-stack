@@ -24,7 +24,6 @@ function App() {
         const api = await useGetMethod("/auth/verify");
         const status = api.status;
         if (status === 200) {
-          console.log(api.data);
           setIsAuth(true);
         }else{
           setIsAuth(false);

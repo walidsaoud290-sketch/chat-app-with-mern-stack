@@ -78,7 +78,6 @@ const Chat = ({ userMessage, officialUser }) => {
         });
         const status = apiMessages.status;
         if (status === 200) {
-          console.log(apiMessages);
           setMessages(apiMessages.data);
         }
       } catch (error) {

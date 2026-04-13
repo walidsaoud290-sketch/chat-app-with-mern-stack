@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { insert_messages } from "../functions/messages/insertMessages.js";
 import cloudinary from "../config/cloudinary.js";
+import { producer } from "../config/kafka.js";
 
 // npm i socket.io (webSocket)
 const app = express();
@@ -20,19 +21,15 @@ export const connect_webSockets = (server) => {
     },
   });
 
-  io.on("connection",(socket)=>{
-    socket.on("join_room",(userId)=>{
-      socket.join(userId);
-      console.log("User joined room :"+userId)
-    })
-  })
-
   io.on("connection", (socket) => {
-    console.log("hhe");
     console.log("User connected:", socket.id);
-
+    socket.on("join_room", (userId) => {
+      socket.join(userId);
+      console.log("User joined room :" + userId);
+    });
     socket.on("send_message", async (data) => {
       messages.push(data);
+
       const messageDB = {
         type: "text",
         senderId: data.send_by,
@@ -40,11 +37,15 @@ export const connect_webSockets = (server) => {
         message: data.content,
         dateTime: new Date(),
       };
+
+      await producer.send({
+        topic: "notification-successful",
+        messages: [{ value: JSON.stringify(messageDB) }],
+      });
       await insert_messages(data.send_by, data.send_to, data.content);
       socket.emit("receive_message", messageDB);
       io.to(messageDB.receiverId).emit("receive_message", messageDB);
     });
-    
 
     socket.on("send_image", async (data) => {
       try {

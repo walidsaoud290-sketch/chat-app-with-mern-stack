@@ -3,16 +3,8 @@ import { generateRefreshToken, generateToken } from "../utils/generateToken.js";
 import User from "../models/User.js";
 import { redisClient } from "../config/redis.js";
 import { producer } from "../config/kafka.js";
+import { validationEmail } from "../functions/validation/validationEmail.js";
 
-const validationEmail = (email) => {
-  const isCorrecte = email.split("@");
-  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isValid = regex.test(email);
-  if (!isNaN(isCorrecte[0]) || !isValid) {
-    return false;
-  }
-  return true;
-};
 
 // Login
 export const LogIn = async (req, res) => {

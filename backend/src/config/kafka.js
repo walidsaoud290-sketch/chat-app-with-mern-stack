@@ -52,7 +52,6 @@ export const deleteTopic = async () => {
     .catch((e) => console.log("Error deleting topic :" + e));
 };
 
-
 export const creatTopicMessages = async () => {
   try {
     await admin.connect();
@@ -60,6 +59,10 @@ export const creatTopicMessages = async () => {
       topics: [
         {
           topic: "email-successful",
+          numPartitions: 3,
+        },
+        {
+          topic: "notification-successful",
           numPartitions: 3,
         },
       ],

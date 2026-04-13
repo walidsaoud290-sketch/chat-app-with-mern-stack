@@ -1,130 +1,144 @@
+import "./Settings.css";
+import { useContext } from "react";
+import { contextUser } from "../Main/MainChat";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { settingsAnimations } from "../animations/Settings/settingsAnimation";
+import { usePostMethod } from "../fetching_to_backend/to_backend";
+import { context } from "../App";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js";
-import { useGetMethod } from "../fetching_to_backend/to_backend";
-const Settings = () => {
-  const [user, setUser] = useState({});
-  const { email } = useParams();
-  const decode_id = encodeURIComponent(email);
 
-  const decrypte = CryptoJS.AES.decrypt(
-    decode_id,
-    import.meta.env.VITE_SECRET_CRYPTAGE,
+const Settings = () => {
+  const { officialUser } = useContext(contextUser);
+  const username = useRef();
+  const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+  const email = useRef();
+  const secret = import.meta.env.VITE_SECRET_CRYPTAGE;
+  const inputImage = useRef();
+  const { errors, setErrors } = useContext(context);
+  const id = encodeURIComponent(
+    CryptoJS.AES.encrypt(officialUser._id, secret).toString(),
   );
 
-  const id_decrypte = decrypte.toString(CryptoJS.enc.Utf8);
-  console.log(id_decrypte);
-  const getUser = async () => {
+  useGSAP(() => {
+    settingsAnimations();
+  }, []);
+
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleImage = async (e) => {
+    let file = e.target.files[0];
+    if (file) {
+      file = await convertImageToBase64(file);
+      setImage(file);
+    } else {
+      setImage(null);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const api = await useGetMethod("/data/user");
-      if (api.status === 200) {
+      const api = await usePostMethod("/profile/update", {
+        email: email.current.value,
+        image: image,
+        username: username.current.value,
+      });
+      const status = api.status;
+      if (status === 200) {
         console.log(api.data);
-        setUser(api.data.user);
+        setErrors({});
+        navigate("/chat/profile/" + id);
       }
     } catch (error) {
-      console.log("Error getting the user :" + error);
-      if (error.response) {
-        console.log(error.response);
-      }
+      console.log("Error settings :" + error);
+      setErrors(error);
     }
   };
 
   useEffect(() => {
-    getUser();
-    console.log(user);
+    setErrors({});
   }, []);
 
   return (
-    <div className="container-fluid bg-dark text-white min-vh-100 d-flex justify-content-center align-items-center">
-      <div className="row w-100" style={{ maxWidth: "1000px" }}>
-        {/* Sidebar */}
-        <div className="col-md-4 bg-black p-4 border-end border-secondary rounded-start">
-          <h4 className="mb-4">Settings</h4>
+    <div className="settings-container">
+      <div className="settings-card">
+        <div className="settings-sidebar">
+          <h3 className="settings-title text-white">Settings</h3>
 
-          <ul className="list-unstyled">
-            <li className="mb-3 text-secondary" style={{ cursor: "pointer" }}>
-              Profile
-            </li>
-            <li className="mb-3 text-secondary" style={{ cursor: "pointer" }}>
-              Account
-            </li>
-            <li className="mb-3 text-secondary" style={{ cursor: "pointer" }}>
-              Privacy
-            </li>
-            <li className="mb-3 text-secondary" style={{ cursor: "pointer" }}>
-              Notifications
-            </li>
+          <ul className="settings-menu">
+            <li className="menu-item active">Profile</li>
+            <li className="menu-item">Account</li>
+            <li className="menu-item">Privacy</li>
+            <li className="menu-item">Notifications</li>
           </ul>
         </div>
 
-        {/* Content */}
-        <div className="col-md-8 bg-secondary bg-opacity-25 p-4 rounded-end">
-          {/* Header */}
-          <div className="d-flex align-items-center mb-4">
-            <div
-              className="rounded-circle bg-secondary d-flex justify-content-center align-items-center me-3"
-              style={{ width: "70px", height: "70px", fontSize: "24px" }}
-            >
-              {user?.username}
+        <div className="settings-content">
+          <div className="settings-user">
+            <div className="settings-avatar">
+              <input
+                type="file"
+                style={{ display: "none" }}
+                ref={inputImage}
+                onChange={handleImage}
+              />
+              <img
+                src={officialUser?.profilePic || "/user.jpg"}
+                className="image-user"
+                alt=""
+                onClick={() => inputImage.current.click()}
+              />
             </div>
 
             <div>
-              <h5 className="mb-0">{user?.name || "User Name"}</h5>
-              <small className="text-light">
-                {user?.email || "email@example.com"}
-              </small>
+              <h4 className="username text-white">{officialUser?.username}</h4>
+              <p className="role text-info"> {officialUser.role} </p>
             </div>
           </div>
 
-          {/* Form */}
-          <form>
-            <div className="mb-3">
-              <label className="form-label text-light">Full Name</label>
+          <form className="settings-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="text-white">Full Name</label>
               <input
                 type="text"
-                className="form-control bg-dark text-white border-secondary"
-                value={user?.username || ""}
-                readOnly
+                ref={username}
+                defaultValue={officialUser?.username}
               />
             </div>
+            {errors?.error_username && (
+              <p className="text-danger"> {errors.error_username} </p>
+            )}
 
-            <div className="mb-3">
-              <label className="form-label text-light">Email</label>
+            <div className="form-group">
+              <label className="text-white">Email</label>
               <input
                 type="email"
-                className="form-control bg-dark text-white border-secondary"
-                value={user?.email || ""}
-                readOnly
-              />
+                ref={email}
+                defaultValue={officialUser.email}
+              />{" "}
+            </div>
+            {errors?.error_email && (
+              <p className="text-danger"> {errors.error_email} </p>
+            )}
+
+            <div className="settings-info">
+              <p>Created at : {officialUser.createdAt}</p>
+              <p>Updated at : {officialUser.updatedAt}</p>
             </div>
 
-            <div className="mb-3">
-              <label className="form-label text-light">Bio</label>
-              <textarea
-                className="form-control bg-dark text-white border-secondary"
-                rows="3"
-                placeholder="Write something about you..."
-              ></textarea>
-              <div>
-                <p className="text-info">
-                  {" "}
-                  Created at : <span> {user.createdAt} </span>{" "}
-                </p>
-                <p className="text-info">Updated At : {user?.updatedAt} </p>
-              </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="d-flex justify-content-between mt-4">
-              <button type="button" className="btn btn-danger">
-                Delete Account
-              </button>
-
-              <button type="button" className="btn btn-primary">
-                Save Changes
-              </button>
-            </div>
+            <button className="settings-btn">Update Profile</button>
           </form>
         </div>
       </div>
