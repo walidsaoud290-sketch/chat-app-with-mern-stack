@@ -1,157 +1,238 @@
+/* ── page background ── */
 .settings-container {
   min-height: 100vh;
+  background: #050d1a;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 20px;
-  width: 100%;
-}
-
-.settings-card {
-  width: 100%;
-  max-width: 1100px;
-  display: flex;
-  background: #1e293b;
-  border-radius: 14px;
+  justify-content: center;
+  padding: 32px;
+  position: relative;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
+/* floating glow orbs */
+.settings-container::before,
+.settings-container::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+.settings-container::before {
+  width: 500px;
+  height: 500px;
+  background: #1a6bff;
+  top: -120px;
+  right: -100px;
+}
+.settings-container::after {
+  width: 350px;
+  height: 350px;
+  background: #00c8ff;
+  bottom: -100px;
+  left: 40px;
+}
+
+/* ── card wrapper ── */
+.settings-card {
+  display: flex;
+  width: 100%;
+  max-width: 860px;
+  min-height: 520px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 2;
+}
+
+/* ── sidebar ── */
 .settings-sidebar {
-  width: 260px;
-  background: #020617;
-  padding: 30px;
+  width: 220px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.025);
+  border-right: 0.5px solid rgba(255, 255, 255, 0.07);
+  padding: 32px 20px;
 }
 
 .settings-title {
-  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 28px;
+  letter-spacing: -0.3px;
 }
 
 .settings-menu {
   list-style: none;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .menu-item {
-  padding: 12px;
-  border-radius: 8px;
-  color: #94a3b8;
-  transition: 0.3s;
-  animation: items 1s ease;
-}
-
-@keyframes items {
-  from {
-    opacity: 0;
-    transform: translate(100px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0px);
-  }
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 0.5px solid transparent;
 }
 
 .menu-item:hover {
-  background: #1e293b;
-  color: white;
-  cursor: pointer;
-  transform: translateX(5px);
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .menu-item.active {
-  background: #3b82f6;
-  color: white;
+  background: #1a6bff;
+  color: #fff;
+  font-weight: 500;
 }
 
-/* content */
-
+/* ── main content ── */
 .settings-content {
   flex: 1;
-  padding: 35px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 32px;
+  overflow-y: auto;
 }
 
-/* user */
-
+/* ── user row ── */
 .settings-user {
   display: flex;
   align-items: center;
-  margin-bottom: 30px;
-}
-.image-user {
-  width: 90px;
-  border-radius: 50%;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.07);
 }
 
 .settings-avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 26px;
-  margin-right: 15px;
-  transition: 0.3s;
+  position: relative;
   cursor: pointer;
 }
 
-.settings-avatar:hover {
-  transform: scale(1.1);
+.image-user {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(55, 138, 221, 0.5);
+  display: block;
+  transition: border-color 0.2s;
 }
 
-/* form */
+.settings-avatar:hover .image-user {
+  border-color: #1a6bff;
+}
 
+/* edit pencil overlay on avatar */
+.settings-avatar::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1a6bff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/%3E%3Cpath d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'/%3E%3C/svg%3E") center/10px no-repeat;
+  border: 2px solid #050d1a;
+}
+
+.username {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.role {
+  font-size: 13px;
+  color: #378add;
+}
+
+/* ── form ── */
 .settings-form {
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .form-group label {
-  margin-bottom: 5px;
-  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
 }
 
-.form-group input,
-.form-group textarea {
+.form-group input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
   width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #334155;
-  background: #020617;
-  color: white;
 }
 
+.form-group input:focus {
+  border-color: #1a6bff;
+  background: rgba(26, 107, 255, 0.06);
+}
+
+/* ── meta dates ── */
+.settings-info {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.settings-info p {
+  font-size: 12px;
+  color: #378add;
+}
+
+/* ── submit button ── */
 .settings-btn {
-  background: #3b82f6;
+  padding: 11px 28px;
+  background: #1a6bff;
   border: none;
-  padding: 10px;
-  border-radius: 6px;
-  color: white;
-  margin-top: 10px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.15s, transform 0.1s;
+  font-family: inherit;
 }
 
 .settings-btn:hover {
-  background: #2563eb;
+  background: #3a7fff;
 }
 
-.settings-info {
-  color: #38bdf8;
-  font-size: 14px;
+.settings-btn:active {
+  transform: scale(0.98);
 }
 
-/* responsive */
-
-@media (max-width: 768px) {
-  .settings-card {
-    flex-direction: column;
-  }
-
-  .settings-sidebar {
-    width: 100%;
-    border-bottom: 1px solid #1e293b;
-  }
+/* ── error text ── */
+.text-danger {
+  font-size: 12px;
+  color: #e24b4a;
+  margin-top: -12px;
 }

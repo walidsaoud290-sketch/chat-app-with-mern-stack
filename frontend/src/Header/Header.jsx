@@ -53,7 +53,6 @@ const Header = () => {
         </ul>
 
         <div className="nav-right">
-          {/* Cart Dropdown */}
           <div className="dropdown">
             <button className="btn btn-ghost btn-circle">
               <div className="indicator">

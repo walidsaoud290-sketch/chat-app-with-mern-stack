@@ -1,398 +1,187 @@
-/* Header.css */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* ── header shell ── */
 .header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  margin-bottom: 30px;
-  z-index: 1000;
-  border-radius: 20px;
-  
+  z-index: 100;
+  background: rgba(5, 13, 26, 0.85);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
-.menu {
-  display: flex;
-}
-.menu li {
-  list-style-type: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-decoration: none;
-  color: #333;
-  margin: 10px;
-  margin-bottom: 7px;
-  margin-right: 5px;
-  cursor: pointer;
-  border-radius: 10px;
-  padding: 10px;
-}
-.menu li * {
-  color: #333;
-  text-decoration: none;
-}
-.menu li *:hover {
-  color: white;
-}
-.menu li:hover {
-  transition: all 0.3s ease;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
+
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 2rem;
-  height: 70px;
-  max-width: 1400px;
+  justify-content: space-between;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 32px;
+  height: 64px;
+  gap: 32px;
 }
 
-/* Left side - Logo */
-.nav-left .logo {
-  font-size: 1.5rem;
+/* ── logo ── */
+.logo {
+  font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: #fff;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: background-color 0.2s;
+  letter-spacing: -0.2px;
+  transition: opacity 0.15s;
+}
+.logo:hover { opacity: 0.75; }
+
+/* ── nav links ── */
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
 }
 
-.nav-left .logo:hover {
-  background-color: #f3f4f6;
+.menu li a {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  transition: color 0.15s;
+  white-space: nowrap;
 }
 
-/* Right side navigation */
+.menu li a:hover { color: #fff; }
+
+/* ── right side ── */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-/* Dropdown base styles */
-.dropdown {
+  gap: 12px;
   position: relative;
-  display: inline-block;
 }
 
-.dropdown-content {
-  position: absolute;
-  right: 0;
-  top: 120%;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s ease;
-  z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Cart button styles */
-.cart-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
+/* ── bell button ── */
+.btn-ghost {
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
-}
-
-.cart-btn:hover {
-  background-color: #f3f4f6;
-}
-
-.cart-indicator {
-  position: relative;
-}
-
-.cart-icon {
-  width: 20px;
-  height: 20px;
-  stroke: #333;
-}
-
-.cart-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: #ef4444;
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 600;
-  min-width: 18px;
-  height: 18px;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-}
-
-/* Cart dropdown */
-.cart-dropdown {
-  width: 200px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  margin-top: 8px;
-}
-
-.cart-preview {
-  padding: 1rem;
-}
-
-.cart-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  color: #333;
-}
-
-.cart-subtotal {
-  color: #3b82f6;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-}
-
-.view-cart-btn {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background 0.15s, border-color 0.15s;
+  color: rgba(255, 255, 255, 0.65);
+  padding: 0;
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 
-.view-cart-btn:hover {
-  background-color: #2563eb;
+.btn-ghost svg {
+  width: 18px;
+  height: 18px;
 }
 
-/* Avatar button styles */
+.indicator { position: relative; display: flex; }
+
+.badge-primary {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1a6bff;
+  border: 1.5px solid #050d1a;
+}
+
+/* ── avatar button ── */
 .avatar-btn {
   background: none;
   border: none;
+  padding: 0;
   cursor: pointer;
-  padding: 0.25rem;
   border-radius: 50%;
-  transition: background-color 0.2s;
-}
-
-.avatar-btn:hover {
-  background-color: #f3f4f6;
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   overflow: hidden;
+  border: 2px solid rgba(55, 138, 221, 0.45);
+  transition: border-color 0.15s;
+  display: block;
 }
+.avatar-btn:hover .avatar { border-color: #1a6bff; }
 
 .avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-/* Profile dropdown */
-.profile-dropdown {
-  width: 200px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* ── dropdown ── */
+.dropdown { position: relative; }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 180px;
+  background: #0d1b2e;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 6px;
   list-style: none;
-  padding: 0.5rem 0;
-  margin-top: 8px;
+  margin: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 200;
 }
 
-.profile-dropdown li {
-  padding: 0;
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+  display: block;
 }
 
 .dropdown-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.6rem 1rem;
-  color: #333;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+  transition: background 0.12s, color 0.12s;
+  cursor: pointer;
 }
 
 .dropdown-item:hover {
-  background-color: #f3f4f6;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
 }
 
-.dropdown-item .badge {
-  background-color: #ef4444;
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0.2rem 0.5rem;
-  border-radius: 9999px;
+/* "New" badge inside dropdown */
+.badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(26, 107, 255, 0.18);
+  color: #378add;
+  border: 0.5px solid rgba(26, 107, 255, 0.3);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 0 1rem;
-  }
-
-  .nav-left .logo {
-    font-size: 1.25rem;
-    padding: 0.5rem;
-  }
-
-  .cart-dropdown,
-  .profile-dropdown {
-    width: 180px;
-  }
-}
-/* Bouton avec indicateur de notification */
-.btn-ghost {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease;
-  position: relative;
-  width: 40px;
-  height: 40px;
-}
-
-.btn-ghost:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.btn-ghost:active {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.btn-ghost:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
-
-/* Conteneur de l'indicateur */
-.indicator {
-  position: relative;
-  display: inline-flex;
-}
-
-/* Style de l'icône SVG */
-.indicator svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
-  color: #374151; /* Couleur gris foncé */
-}
-
-/* Badge de notification */
-.badge-indicator {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 18px;
-  height: 18px;
-  border-radius: 9999px;
-  background-color: #3b82f6; /* Bleu primary */
-  border: 2px solid white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Badge de petite taille */
-.badge-xs {
-  font-size: 0.65rem;
-  padding: 0 4px;
-  min-width: 16px;
-  height: 16px;
-}
-
-/* Badge primary (bleu) */
-.badge-primary {
-  background-color: #3b82f6;
-  color: white;
-}
-
-/* Si vous voulez ajouter un nombre dans le badge */
-.badge-indicator.has-number {
-  font-size: 0.7rem;
-  font-weight: 600;
-}
-
-/* Animation optionnelle pour le badge */
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-}
-
-.badge-indicator.pulse {
-  animation: pulse 2s infinite;
-}
-
-/* Pour un badge vide (juste un point) */
-.badge-indicator:empty {
-  width: 10px;
-  height: 10px;
-  min-width: auto;
-  top: -2px;
-  right: -2px;
-}
-
-/* Version avec point rouge (comme dans votre code) */
-.badge-indicator.dot {
-  width: 8px;
-  height: 8px;
-  min-width: auto;
-  padding: 0;
-  background-color: #ef4444; /* Rouge */
-  top: -2px;
-  right: -2px;
-  border: none;
-}
-
-/* Si vous voulez différentes couleurs de badge */
-.badge-success {
-  background-color: #10b981;
-}
-
-.badge-warning {
-  background-color: #f59e0b;
-}
-
-.badge-error {
-  background-color: #ef4444;
+/* ── make background page-wide ── */
+body, #root {
+  background: #050d1a;
+  min-height: 100vh;
 }

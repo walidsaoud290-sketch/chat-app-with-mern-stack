@@ -22,8 +22,17 @@
   flex: 1;
   padding: 24px;
   background: #f8f9fa;
-  background-image: radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.05) 2%, transparent 15%),
-    radial-gradient(circle at 75% 75%, rgba(118, 75, 162, 0.05) 2%, transparent 15%);
+  background-image:
+    radial-gradient(
+      circle at 25% 25%,
+      rgba(102, 126, 234, 0.05) 2%,
+      transparent 15%
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(118, 75, 162, 0.05) 2%,
+      transparent 15%
+    );
   overflow-y: auto;
   overscroll-behavior-y: none;
   height: 400px;
@@ -363,8 +372,17 @@
 
   .chat-window {
     background: #2d2d2d;
-    background-image: radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.1) 2%, transparent 15%),
-      radial-gradient(circle at 75% 75%, rgba(118, 75, 162, 0.1) 2%, transparent 15%);
+    background-image:
+      radial-gradient(
+        circle at 25% 25%,
+        rgba(102, 126, 234, 0.1) 2%,
+        transparent 15%
+      ),
+      radial-gradient(
+        circle at 75% 75%,
+        rgba(118, 75, 162, 0.1) 2%,
+        transparent 15%
+      );
   }
 
   .chat-start .chat-bubble {

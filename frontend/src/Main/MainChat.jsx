@@ -7,6 +7,8 @@ import { createContext } from "react";
 import { io } from "socket.io-client";
 import Notifications from "../NotificationsFolder/NotificationBell";
 import notificationSound from "../assets/notification.mp3";
+import { useReducer } from "react";
+import { formReducer, initialState } from "./reducers";
 export const contextUser = createContext();
 
 const playNotification = () => {
@@ -15,12 +17,11 @@ const playNotification = () => {
 };
 
 const MainChat = () => {
-  const [loading, setIsLoading] = useState(true);
-  const [isAuth, setIsAuth] = useState(false);
   const [officialUser, setOfficialUser] = useState({});
-  const [socket, setSocket] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [userMessage, setUserMessage] = useState({});
+  const [reducer,dispatch] = useReducer(formReducer,initialState);
+
 
   const getUser = async () => {
     try {
@@ -38,29 +39,30 @@ const MainChat = () => {
     try {
       const api = await useGetMethod("/auth/verify");
       if (api.status == 200) {
-        setIsAuth(true);
+        dispatch({type:"isAuth",payload:true});
         await getUser();
       } else {
-        setIsAuth(false);
+        dispatch({type:"isAuth",payload:false});
       }
     } catch (error) {
       console.log("Error main chat :" + error);
-      setIsAuth(false);
+      dispatch({type:"isAuth",payload:false});
     } finally {
-      setIsLoading(false);
+      dispatch({type:"loading",payload:false});
+    
     }
   };
 
   useEffect(() => {
-    if (isAuth) getUser();
-  }, [isAuth]);
+    if (reducer.isAuth) getUser();
+  }, [reducer.isAuth]);
 
   useEffect(() => {
     checkAuth();
   }, []);
 
   useEffect(() => {
-    if (isAuth && officialUser._id) {
+    if (reducer.isAuth && officialUser._id) {
       const SOCKET_URL =
         import.meta.env.VITE_SOCKET_IO_NOTIFICATION || "http://localhost:7000";
       console.log("Connecting to notification socket:", SOCKET_URL);
@@ -84,8 +86,7 @@ const MainChat = () => {
       newSocket.on("notification_room_joined", (data) => {
         console.log("Joined notification room:", data);
       });
-
-      setSocket(newSocket);
+      dispatch({type:"socket",payload:newSocket});
 
       return () => {
         console.log("Disconnecting notification socket");
@@ -94,10 +95,10 @@ const MainChat = () => {
         }
       };
     }
-  }, [isAuth, officialUser._id]);
+  }, [reducer.isAuth, officialUser._id]);
 
   useEffect(() => {
-    if (!socket) return;
+    if (!reducer.socket) return;
 
     const handleNotification = (data) => {
       console.log("Received notification:", data);
@@ -129,18 +130,15 @@ const MainChat = () => {
       }
     };
 
-    socket.on("send_notification", handleNotification);
+    reducer.socket.on("send_notification", handleNotification);
 
     return () => {
-      socket.off("send_notification", handleNotification);
+      reducer.socket.off("send_notification", handleNotification);
     };
-  }, [socket, officialUser._id]);
+  }, [reducer.socket, officialUser._id]);
 
-  useEffect(() => {
-    console.log("Current notifications:", notifications);
-  }, [notifications, userMessage]);
 
-  if (loading) return <p> Loading ... </p>;
+  if (reducer.loading) return <p> Loading ... </p>;
 
   return (
     <>
@@ -158,7 +156,7 @@ const MainChat = () => {
           <Header />
         </div>
         <Notifications />
-        {isAuth ? (
+        {reducer.isAuth ? (
           <>
             <div>
               <Outlet />
