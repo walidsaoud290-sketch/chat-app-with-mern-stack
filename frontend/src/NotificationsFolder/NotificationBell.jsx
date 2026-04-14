@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { contextUser } from "../Main/MainChat";
-
+import "./Notification.css";
 const Notifications = () => {
   const { notifications, setNotifications } = useContext(contextUser);
   const [open, setOpen] = useState(false);
@@ -52,8 +52,15 @@ const Notifications = () => {
                   }}
                   onClick={() => markRead(n.id)}
                 >
-                  <div style={styles.avatar}>{getInitials(n.senderId)}</div>
+                  <div style={styles.avatar}>
+                    <img
+                      src={n?.user?.profilePic || "/user.jpg"}
+                      className="notification_image_user"
+                      alt=""
+                    />
+                  </div>
                   <div style={styles.body}>
+                    <p className="text-start">{n.user.username}</p>
                     <p style={styles.msg}>{n.message}</p>
                     <span style={styles.time}>{formatTime(n.dateTime)}</span>
                   </div>

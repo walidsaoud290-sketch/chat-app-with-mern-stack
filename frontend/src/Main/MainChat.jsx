@@ -6,8 +6,13 @@ import { useGetMethod } from "../fetching_to_backend/to_backend";
 import { createContext } from "react";
 import { io } from "socket.io-client";
 import Notifications from "../NotificationsFolder/NotificationBell";
-
+import notificationSound from "../assets/notification.mp3";
 export const contextUser = createContext();
+
+const playNotification = () => {
+  const audio = new Audio(notificationSound);
+  audio.play();
+};
 
 const MainChat = () => {
   const [loading, setIsLoading] = useState(true);
@@ -15,6 +20,7 @@ const MainChat = () => {
   const [officialUser, setOfficialUser] = useState({});
   const [socket, setSocket] = useState(null);
   const [notifications, setNotifications] = useState([]);
+  const [userMessage, setUserMessage] = useState({});
 
   const getUser = async () => {
     try {
@@ -103,9 +109,16 @@ const MainChat = () => {
           message: data.message,
           dateTime: data.dateTime || new Date().toISOString(),
           read: false,
+          user: data.user,
         };
         console.log("New notification:", notification);
-        setNotifications((prev) => [notification, ...prev]);
+
+        if (userMessage !== notification.receiverId) {
+          setNotifications((prev) => [notification, ...prev]);
+          playNotification();
+        } else {
+          setNotifications([]);
+        }
 
         if (Notification.permission === "granted") {
           new Notification("New Message", {
@@ -125,7 +138,7 @@ const MainChat = () => {
 
   useEffect(() => {
     console.log("Current notifications:", notifications);
-  }, [notifications]);
+  }, [notifications, userMessage]);
 
   if (loading) return <p> Loading ... </p>;
 
@@ -137,6 +150,8 @@ const MainChat = () => {
           setOfficialUser,
           notifications,
           setNotifications,
+          userMessage,
+          setUserMessage,
         }}
       >
         <div className="header">

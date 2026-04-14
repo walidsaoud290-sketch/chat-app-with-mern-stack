@@ -19,7 +19,7 @@ export const connect_web_sockets = async (server) => {
     socket.on("join_room_notifications", (userId) => {
       if (userId) {
         socket.join(userId);
-        socket.emit("notification_room_joined", { userId, status: "success" });
+        socket.emit("notification_room_joined", { userId});
       }
     });
 
@@ -42,9 +42,9 @@ export const connect_web_sockets = async (server) => {
     eachMessage: async ({ message, topic, partition }) => {
       try {
         const data = JSON.parse(message.value.toString());
+        
         console.log("Kafka message received:", data);
         
-        // Emit to the specific user's room
         if (data.receiverId) {
           io.to(data.receiverId).emit("send_notification", data);
           console.log(`Notification sent to user ${data.receiverId}`);

@@ -4,6 +4,7 @@ import express from "express";
 import { insert_messages } from "../functions/messages/insertMessages.js";
 import cloudinary from "../config/cloudinary.js";
 import { producer } from "../config/kafka.js";
+import User from "../models/User.js";
 
 // npm i socket.io (webSocket)
 const app = express();
@@ -29,11 +30,15 @@ export const connect_webSockets = (server) => {
     });
     socket.on("send_message", async (data) => {
       messages.push(data);
-
+      const user = await User.findById(data.send_by)
+        .select("-password")
+        .select("-_id");
+      console.log(user);
       const messageDB = {
         type: "text",
         senderId: data.send_by,
         receiverId: data.send_to,
+        user:user,
         message: data.content,
         dateTime: new Date(),
       };

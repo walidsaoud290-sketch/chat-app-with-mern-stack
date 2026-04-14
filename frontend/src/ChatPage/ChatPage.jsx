@@ -9,9 +9,8 @@ import { useContext } from "react";
 import { contextUser } from "../Main/MainChat";
 
 const ChatPage = () => {
-  const { officialUser } = useContext(contextUser);
+  const { officialUser,setOfficialUser ,userMessage,setUserMessage} = useContext(contextUser);
   const [users, setUsers] = useState([]);
-  const [userMessage, setUserMessage] = useState({} || users[0]);
   const [isNotified, setIsNotified] = useState(false);
 
   const getUsers = async () => {

@@ -25,7 +25,7 @@ function App() {
         const status = api.status;
         if (status === 200) {
           setIsAuth(true);
-        }else{
+        } else {
           setIsAuth(false);
         }
       } catch (error) {
@@ -34,52 +34,51 @@ function App() {
         }
         setIsAuth(false);
         console.log("Erreur App : " + error);
-      }finally{
+      } finally {
         setIsLoading(false);
       }
     };
+
     isAuthenticated();
   }, []);
 
-  if(loading) return <h1 className="text-white">Loading ....</h1>
+  if (loading) return <h1 className="text-white">Loading ....</h1>;
 
   return (
     <>
-    <h1 className="text-white">Welcome to chat App</h1>
-       <context.Provider value={{ errors, setErrors,setIsAuth }}>
-      <BrowserRouter>
-        <Routes>
+      <context.Provider value={{ errors, setErrors, setIsAuth }}>
+        <BrowserRouter>
+          <Routes>
+            {/* Routes publiques */}
+            <Route
+              path="/"
+              element={!isAuth ? <LogIn /> : <Navigate to="/chat/contact" />}
+            />
+            <Route
+              path="/signUp"
+              element={!isAuth ? <SignUp /> : <Navigate to="/chat/contact" />}
+            />
 
-          {/* Routes publiques */}
-          <Route
-            path="/"
-            element={!isAuth ? <LogIn /> : <Navigate to="/chat/contact" />}
-          />
-          <Route
-            path="/signUp"
-            element={!isAuth ? <SignUp /> : <Navigate to="/chat/contact" />}
-          />
+            {/* Routes protégées */}
+            <Route
+              path="/chat"
+              element={isAuth ? <MainChat /> : <Navigate to="/" replace />}
+            >
+              <Route path="contact" element={<ChatPage />} />
+              <Route path="Home" element={<Home />} />
+              <Route path="Profile/:email" element={<Profile />} />
+              <Route path="Settings/:id" element={<Settings />} />
+              <Route path="Logout" element={<Logout />} />
+            </Route>
 
-          {/* Routes protégées */}
-          <Route
-            path="/chat"
-            element={isAuth ? <MainChat /> : <Navigate to="/" replace />}
-          >
-            <Route path="contact" element={<ChatPage />} />
-            <Route path="Home" element={<Home />} />
-            <Route path="Profile/:email" element={<Profile />} />
-            <Route path="Settings/:id" element={<Settings />} />
-            <Route path="Logout" element={<Logout />} />
-          </Route>
-
-          {/* Route inconnue */}
-          <Route
-            path="*"
-            element={<h1 className="text-white">Not found Page</h1>}
-          />
-        </Routes>
-      </BrowserRouter>
-    </context.Provider>
+            {/* Route inconnue */}
+            <Route
+              path="*"
+              element={<h1 className="text-white">Not found Page</h1>}
+            />
+          </Routes>
+        </BrowserRouter>
+      </context.Provider>
     </>
   );
 }
