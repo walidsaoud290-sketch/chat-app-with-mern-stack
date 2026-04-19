@@ -2,9 +2,12 @@ import "./Render.css";
 
 const Render = ({ message, idx, officialUser }) => {
   const isOwnMessage = message.senderId === officialUser._id;
-  
+
   return (
-    <li key={idx} className={`message-item ${isOwnMessage ? "message-own" : "message-other"}`}>
+    <li
+      key={idx}
+      className={`message-item ${isOwnMessage ? "message-own" : "message-other"}`}
+    >
       {message.type === "image" ? (
         <div className={`chat ${isOwnMessage ? "chat-end" : "chat-start"}`}>
           <div className="chat-image avatar">
@@ -22,15 +25,17 @@ const Render = ({ message, idx, officialUser }) => {
           <div className="chat-header">
             {isOwnMessage ? "You" : "Other User"}
             <time className="chat-time">
-              {new Date(message.timestamp).toLocaleTimeString()}
+              {new Date(message.dateTime).toLocaleTimeString()}
             </time>
           </div>
-          <div className={`chat-bubble ${isOwnMessage ? "chat-bubble-own" : "chat-bubble-other"}`}>
+          <div
+            className={`chat-bubble ${isOwnMessage ? "chat-bubble-own" : "chat-bubble-other"}`}
+          >
             <img
-              src={message.content}
+              src={message.message}
               alt="Chat content"
               className="chat-image-message"
-              onClick={() => window.open(message.content, "_blank")}
+              onClick={() => window.open(message.message, "_blank")}
             />
           </div>
           <div className="chat-footer">
@@ -57,7 +62,9 @@ const Render = ({ message, idx, officialUser }) => {
               {new Date(message.dateTime).toLocaleTimeString()}
             </time>
           </div>
-          <div className={`chat-bubble ${isOwnMessage ? "chat-bubble-own" : "chat-bubble-other"}`}>
+          <div
+            className={`chat-bubble ${isOwnMessage ? "chat-bubble-own" : "chat-bubble-other"}`}
+          >
             {message.message}
           </div>
           <div className="chat-footer">

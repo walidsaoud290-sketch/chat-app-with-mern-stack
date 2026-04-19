@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 let messages = [];
-
+let onlineUsers = new Map();
 export const connect_webSockets = (server) => {
   // creation un serveur webSocket
   const io = new Server(server, {
@@ -24,10 +24,15 @@ export const connect_webSockets = (server) => {
 
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
-    socket.on("join_room", (userId) => {
+    socket.on("join_room", async (userId) => {
       socket.join(userId);
-      console.log("User joined room :" + userId);
+      socket.userId = userId;
+      onlineUsers.set(userId, socket.id);
+      await User.findByIdAndUpdate(userId, {
+        status: "online",
+      });
     });
+
     socket.on("send_message", async (data) => {
       messages.push(data);
       const user = await User.findById(data.send_by)
@@ -38,7 +43,7 @@ export const connect_webSockets = (server) => {
         type: "text",
         senderId: data.send_by,
         receiverId: data.send_to,
-        user:user,
+        user: user,
         message: data.content,
         dateTime: new Date(),
       };
@@ -49,17 +54,17 @@ export const connect_webSockets = (server) => {
       });
       await insert_messages(data.send_by, data.send_to, data.content);
       socket.emit("receive_message", messageDB);
-      io.to(messageDB.receiverId).emit("receive_message", messageDB);
+      io.to(data.send_to).emit("receive_message", messageDB);
     });
 
     socket.on("send_image", async (data) => {
       try {
-        const result = await cloudinary.uploader.upload(data.content, {
+        const result = await cloudinary.uploader.upload(data.message, {
           folder: "chat_images",
         });
         const message = {
           type: "image",
-          content: result.secure_url,
+          message: result.secure_url,
           senderId: data.send_by,
           receiverId: data.send_to,
           dateTime: new Date(),
@@ -68,8 +73,12 @@ export const connect_webSockets = (server) => {
         await insert_messages(
           message.senderId,
           message.receiverId,
-          message.content,
+          message.message,
         );
+        await producer.send({
+          topic: "notification-successful",
+          messages: [{ value: JSON.stringify(message) }],
+        });
         socket.emit("receive_image", message);
         io.to(message.receiverId).emit("receive_image", message);
       } catch (error) {
@@ -78,7 +87,22 @@ export const connect_webSockets = (server) => {
     });
 
     // disconnection
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
+      const userId = socket.userId;
+      if (!userId) return;
+      onlineUsers.delete(userId);
+
+      await User.findByIdAndUpdate(userId, {
+        lastSeen: new Date(),
+        status: "offline",
+      });
+
+      io.emit("user_status", {
+        userId,
+        status: "offline",
+        lastSeen: new Date(),
+      });
+
       console.log("User disconnected:", socket.id);
     });
 

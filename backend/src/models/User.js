@@ -17,6 +17,15 @@ const userSchema = new mongoose.Schema(
       required: true,
       min: 6,
     },
+    status: {
+      type: String,
+      enum: ["online", "offline"],
+      default: "offline",
+    },
+    lastSeen: {
+      type: Date,
+      default: null,
+    },
     profilePic: {
       type: String,
       default: "backend/src/assets/user.jpg",

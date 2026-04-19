@@ -3,6 +3,7 @@ const Users = ({ users, setUserMessage }) => {
   return (
     <div className="users">
       {users.map((user, _) => {
+        console.log(user);
         return (
           <>
             <div
@@ -15,14 +16,18 @@ const Users = ({ users, setUserMessage }) => {
                   <img
                     alt="Tailwind CSS chat bubble component"
                     src={
-                      user.profilePic
-                        ? "https://i.pravatar.cc/150"
-                        : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                      user?.profilePic !== ""
+                        ? "/user.jpg"
+                        : "frontend/public/user.jpg"
                     }
+                  />
+                  <h1> {user.status} </h1>
+                  <span
+                    className={`status-dot ${user.status === "online" ? "online" : "offline"}`}
                   />
                 </div>
               </div>
-              <li className="user">{user.username}</li>
+              <li className="username_user">{user.username}</li>
             </div>
           </>
         );

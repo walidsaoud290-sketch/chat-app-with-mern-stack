@@ -14,7 +14,7 @@ const Notifications = () => {
   };
 
   const markAll = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setNotifications([]);
   };
 
   const getInitials = (senderId) =>
@@ -54,14 +54,23 @@ const Notifications = () => {
                 >
                   <div style={styles.avatar}>
                     <img
-                      src={n?.user?.profilePic || "/user.jpg"}
+                      src={n?.user?.profilePic === "" ? "/user.jpg" : ""}
                       className="notification_image_user"
                       alt=""
                     />
                   </div>
                   <div style={styles.body}>
-                    <p className="text-start">{n.user.username}</p>
-                    <p style={styles.msg}>{n.message}</p>
+                    <p className="text-start">{n?.user?.username}</p>
+                    {n.type === "text" ? (
+                      <p style={styles.msg}>{n.message}</p>
+                    ) : (
+                      <img
+                        src={n?.message}
+                        alt="image"
+                        style={{ width: "150px" }}
+                      />
+                    )}
+
                     <span style={styles.time}>{formatTime(n.dateTime)}</span>
                   </div>
                   {!n.read && <div style={styles.dot} />}

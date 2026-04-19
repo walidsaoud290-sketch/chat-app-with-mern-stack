@@ -9,6 +9,8 @@ import Notifications from "../NotificationsFolder/NotificationBell";
 import notificationSound from "../assets/notification.mp3";
 import { useReducer } from "react";
 import { formReducer, initialState } from "./reducers";
+import { getOfficialUser } from "../functions/getUsers/getUsers.js";
+
 export const contextUser = createContext();
 
 const playNotification = () => {
@@ -20,41 +22,33 @@ const MainChat = () => {
   const [officialUser, setOfficialUser] = useState({});
   const [notifications, setNotifications] = useState([]);
   const [userMessage, setUserMessage] = useState({});
-  const [reducer,dispatch] = useReducer(formReducer,initialState);
-
-
-  const getUser = async () => {
-    try {
-      const api = await useGetMethod("/data/user");
-      if (api.status === 200) {
-        setOfficialUser(api.data.user);
-      }
-    } catch (error) {
-      if (error.response) console.log("Error response :" + error.response);
-      console.log("Error get official user :" + error);
-    }
-  };
+  const [reducer, dispatch] = useReducer(formReducer, initialState);
 
   const checkAuth = async () => {
     try {
       const api = await useGetMethod("/auth/verify");
       if (api.status == 200) {
-        dispatch({type:"isAuth",payload:true});
-        await getUser();
+        dispatch({ type: "isAuth", payload: true });
+        await getOfficialUser();
       } else {
-        dispatch({type:"isAuth",payload:false});
+        dispatch({ type: "isAuth", payload: false });
       }
     } catch (error) {
       console.log("Error main chat :" + error);
-      dispatch({type:"isAuth",payload:false});
+      dispatch({ type: "isAuth", payload: false });
     } finally {
-      dispatch({type:"loading",payload:false});
-    
+      dispatch({ type: "loading", payload: false });
     }
   };
 
   useEffect(() => {
-    if (reducer.isAuth) getUser();
+    const fetchUser = async () => {
+      if (reducer.isAuth) {
+        const user = await getOfficialUser();
+        setOfficialUser(user);
+      }
+    };
+    fetchUser();
   }, [reducer.isAuth]);
 
   useEffect(() => {
@@ -63,8 +57,7 @@ const MainChat = () => {
 
   useEffect(() => {
     if (reducer.isAuth && officialUser._id) {
-      const SOCKET_URL =
-        import.meta.env.VITE_SOCKET_IO_NOTIFICATION || "http://localhost:7000";
+      const SOCKET_URL = import.meta.env.VITE_SOCKET_IO_NOTIFICATION || "http://localhost:7000";
       console.log("Connecting to notification socket:", SOCKET_URL);
 
       const newSocket = io(SOCKET_URL, {
@@ -86,7 +79,7 @@ const MainChat = () => {
       newSocket.on("notification_room_joined", (data) => {
         console.log("Joined notification room:", data);
       });
-      dispatch({type:"socket",payload:newSocket});
+      dispatch({ type: "socket", payload: newSocket });
 
       return () => {
         console.log("Disconnecting notification socket");
@@ -104,6 +97,7 @@ const MainChat = () => {
       console.log("Received notification:", data);
       if (officialUser._id === data.receiverId) {
         const notification = {
+          type: data.type,
           id: Date.now(),
           senderId: data.senderId,
           receiverId: data.receiverId,
@@ -136,7 +130,6 @@ const MainChat = () => {
       reducer.socket.off("send_notification", handleNotification);
     };
   }, [reducer.socket, officialUser._id]);
-
 
   if (reducer.loading) return <p> Loading ... </p>;
 

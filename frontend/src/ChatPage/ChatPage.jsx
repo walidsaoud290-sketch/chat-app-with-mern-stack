@@ -9,10 +9,10 @@ import { useContext } from "react";
 import { contextUser } from "../Main/MainChat";
 
 const ChatPage = () => {
-  const { officialUser ,userMessage,setUserMessage} = useContext(contextUser);
+  const { officialUser, userMessage, setUserMessage } = useContext(contextUser);
   const [users, setUsers] = useState([]);
 
-  const getUsers = async () => {
+  const getAllUsers = async () => {
     try {
       const api = await useGetMethod("/data/users_amies");
       if (api.status !== 200) {
@@ -36,8 +36,8 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    getAllUsers();
+  }, [officialUser]);
   return (
     <>
       <div className="parent">
@@ -49,10 +49,7 @@ const ChatPage = () => {
           )}
         </div>
         <div className="div2">
-          <Chat
-            userMessage={userMessage}
-            officialUser={officialUser}
-          />
+          <Chat userMessage={userMessage} officialUser={officialUser} />
         </div>
         <div className="div3">
           <UsersComponent

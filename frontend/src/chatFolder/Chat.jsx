@@ -6,108 +6,118 @@ import { usePostMethod } from "../fetching_to_backend/to_backend";
 import Render from "../renderMessage/Render";
 
 const Chat = ({ userMessage, officialUser }) => {
-  const [socket, setSocket] = useState(null);
+  const socketRef = useRef(null);
   const [messages, setMessages] = useState([]);
+
   const inputMessage = useRef();
   const inputImage = useRef();
   const chatWindowRef = useRef();
+
   const idx = new Date().getDay();
   const day = days[idx - 1];
 
+  // scroll auto
   useEffect(() => {
     if (chatWindowRef.current) {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
   }, [messages]);
 
-  const addMessage = (e) => {
-    e.preventDefault();
-    const message = inputMessage.current.value;
-    if (message && socket) {
-      const messageData = {
-        type: "text",
-        content: message,
-        sender: socket.id,
-        send_by: officialUser._id,
-        send_to: userMessage._id,
-      };
-      socket.emit("send_message", messageData);
-      inputMessage.current.value = "";
-    }
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-
-    formData.append("image", file);
-    if (file && socket) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const imageData = {
-          type: "image",
-          content: reader.result,
-          sender: socket.id,
-          send_by: officialUser._id,
-          send_to: userMessage._id,
-        };
-
-        socket.emit("send_image", imageData);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
+  // connection socket
   useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_SOCKET_IO);
-    newSocket.emit("join_room", officialUser._id);
+    const socket = io(import.meta.env.VITE_SOCKET_IO);
 
-    setSocket(newSocket);
+    socket.emit("join_room", officialUser._id);
+
+    socketRef.current = socket;
+
+    return () => socket.disconnect();
+  }, [officialUser._id]);
+
+  // recevoir messages
+  useEffect(() => {
+    const socket = socketRef.current;
+
+    if (!socket || !userMessage?._id) return;
+
+    const receiveMessage = (data) => {
+      if (
+        data.senderId === userMessage._id ||
+        data.receiverId === userMessage._id
+      ) {
+        setMessages((prev) => [...prev, data]);
+      }
+    };
+
+    socket.on("receive_message", receiveMessage);
+    socket.on("receive_image", receiveMessage);
 
     return () => {
-      newSocket.disconnect();
+      socket.off("receive_message", receiveMessage);
+      socket.off("receive_image", receiveMessage);
     };
-  }, []);
+  }, [userMessage]);
 
+  // envoyer message
+  const addMessage = (e) => {
+    e.preventDefault();
+
+    const message = inputMessage.current.value;
+
+    if (!message || !socketRef.current) return;
+
+    socketRef.current.emit("send_message", {
+      type: "text",
+      content: message,
+      send_by: officialUser._id,
+      send_to: userMessage._id,
+      dateTime: new Date(),
+    });
+
+    inputMessage.current.value = "";
+  };
+
+  // upload image
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+
+    if (!file || !socketRef.current) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      socketRef.current.emit("send_image", {
+        type: "image",
+        message: reader.result,
+        send_by: officialUser._id,
+        send_to: userMessage._id,
+        dateTime: new Date(),
+      });
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  // récupérer messages DB
   useEffect(() => {
     const getMessages = async () => {
-      if (!userMessage) return;
+      if (!userMessage?._id) return;
+
       try {
         const apiMessages = await usePostMethod("/messages/getMessages", {
           userMessage,
         });
-        const status = apiMessages.status;
-        if (status === 200) {
+
+        if (apiMessages.status === 200) {
           setMessages(apiMessages.data);
         }
       } catch (error) {
-        if (error.response) {
-          console.log("Error response :" + error.response.data);
-        }
-        console.log("Error getting the data messages :" + error);
+        console.log("Error getting messages:", error);
       }
     };
+
     getMessages();
   }, [userMessage]);
-
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on("receive_message", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
-
-    socket.on("receive_image", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
-
-    return () => {
-      socket.off("receive_message");
-      socket.off("receive_image");
-    };
-  }, [socket]);
-
-  useEffect(() => {}, []);
 
   return (
     <div className="card">

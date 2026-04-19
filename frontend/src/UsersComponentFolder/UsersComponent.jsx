@@ -1,19 +1,24 @@
 import "./UsersComponent.css";
+import formatLastSeen from "../functions/lastSeen/seen";
 const UsersComponent = ({ userMessage, users }) => {
   return (
     <>
       <div className="user">
         <div className="user-info">
           <img
-            src={
-              userMessage?.profilePic
-                ? userMessage.profilePic
-                : "https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
-            }
+            src={userMessage?.profilePic ? "/user.jpg" : "/user.jpg"}
             alt="user_image"
           />
+          <span
+            className={`status-dot ${userMessage.status === "online" ? "online" : "offline"}`}
+          />
           <h1 className="text-white"> {userMessage?.username} </h1>
+          {userMessage.status === "offline"
+            ? formatLastSeen(userMessage?.lastSeen)
+            : ""}
         </div>
+        <br />
+        <br />
         <div className="user-call">
           <svg
             xmlns="http://www.w3.org/2000/svg"
